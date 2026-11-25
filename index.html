@@ -1,0 +1,2567 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Painel interativo Material 3 Expressive do Manual de Atendimento, Conduta e Procedimentos Operacionais da A2M Assessoria Jurídica Condominial.">
+<title>Painel Operacional | Manual de Atendimento A2M</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif']
+      }
+    }
+  }
+};
+</script>
+<style>
+  /* ============================================================
+     MATERIAL 3 EXPRESSIVE — TONAL DESIGN TOKENS (LIGHT & DARK)
+     ============================================================ */
+  :root {
+    --md-surface: #f4f7fc;
+    --md-surface-container-low: #ffffff;
+    --md-surface-container: #eaf0f8;
+    --md-surface-container-high: #dfe8f4;
+    --md-surface-container-highest: #d3e0f0;
+    --md-on-surface: #0f1b2b;
+    --md-on-surface-variant: #44556b;
+    --md-outline: #73849b;
+    --md-outline-variant: #cad6e6;
+
+    --md-primary: #143052;
+    --md-on-primary: #ffffff;
+    --md-primary-container: #d3e4ff;
+    --md-on-primary-container: #0a203b;
+
+    --md-secondary: #3b5370;
+    --md-secondary-container: #dce8f8;
+    --md-on-secondary-container: #142840;
+
+    --md-tertiary: #8f6c2b;
+    --md-on-tertiary: #ffffff;
+    --md-tertiary-container: #f9e6be;
+    --md-on-tertiary-container: #302003;
+
+    --md-success-bg: #dcfce7;
+    --md-success-text: #14532d;
+    --md-warning-bg: #fef3c7;
+    --md-warning-text: #78350f;
+
+    --md-rail-bg: #10243d;
+    --md-rail-text: #e6eef8;
+    --md-rail-muted: #9eb3cc;
+    --md-rail-active-bg: #f0cc7e;
+    --md-rail-active-text: #1c1302;
+
+    --md-shadow-sm: 0 2px 10px rgba(15, 27, 43, 0.05);
+    --md-shadow-md: 0 8px 28px rgba(15, 27, 43, 0.09);
+    --md-shadow-lg: 0 24px 64px rgba(10, 20, 35, 0.22);
+    --m3-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --m3-standard: cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .dark {
+    --md-surface: #0c1219;
+    --md-surface-container-low: #141d28;
+    --md-surface-container: #1b2736;
+    --md-surface-container-high: #243347;
+    --md-surface-container-highest: #2e4058;
+    --md-on-surface: #f0f5fb;
+    --md-on-surface-variant: #b8c8dc;
+    --md-outline: #8397b0;
+    --md-outline-variant: #314359;
+
+    --md-primary: #a6cbff;
+    --md-on-primary: #07203d;
+    --md-primary-container: #1d3c63;
+    --md-on-primary-container: #e0edff;
+
+    --md-secondary: #b9cde6;
+    --md-secondary-container: #26384e;
+    --md-on-secondary-container: #e3eefc;
+
+    --md-tertiary: #ecc77a;
+    --md-on-tertiary: #2c1e04;
+    --md-tertiary-container: #4c3810;
+    --md-on-tertiary-container: #ffebbd;
+
+    --md-success-bg: #123824;
+    --md-success-text: #86efac;
+    --md-warning-bg: #452c08;
+    --md-warning-text: #fde68a;
+
+    --md-rail-bg: #0f1722;
+    --md-rail-text: #eef4fb;
+    --md-rail-muted: #93a7bf;
+    --md-rail-active-bg: #ecc77a;
+    --md-rail-active-text: #201502;
+
+    --md-shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.28);
+    --md-shadow-md: 0 10px 30px rgba(0, 0, 0, 0.42);
+    --md-shadow-lg: 0 24px 68px rgba(0, 0, 0, 0.65);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-family: 'Inter', system-ui, sans-serif; }
+  body {
+    margin: 0;
+    background-color: var(--md-surface);
+    color: var(--md-on-surface);
+    overflow-x: hidden;
+    transition: background-color 0.25s var(--m3-standard), color 0.25s var(--m3-standard);
+  }
+
+  .font-display { font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif; }
+
+  .m3-card {
+    background-color: var(--md-surface-container-low);
+    color: var(--md-on-surface);
+    border: 1px solid var(--md-outline-variant);
+    box-shadow: var(--md-shadow-sm);
+  }
+  .m3-tonal {
+    background-color: var(--md-surface-container);
+    color: var(--md-on-surface);
+  }
+  .m3-tonal-high {
+    background-color: var(--md-surface-container-high);
+    color: var(--md-on-surface);
+  }
+  .m3-text { color: var(--md-on-surface); }
+  .m3-muted { color: var(--md-on-surface-variant); }
+  .m3-border { border-color: var(--md-outline-variant); }
+
+  .m3-btn-primary {
+    background-color: var(--md-tertiary);
+    color: var(--md-on-tertiary);
+    transition: transform 0.2s var(--m3-spring), filter 0.15s ease;
+  }
+  .m3-btn-primary:hover { transform: translateY(-2px) scale(1.015); filter: brightness(1.06); }
+  .m3-btn-primary:active { transform: scale(0.97); }
+
+  .m3-btn-tonal {
+    background-color: var(--md-primary-container);
+    color: var(--md-on-primary-container);
+    transition: transform 0.2s var(--m3-spring), filter 0.15s ease;
+  }
+  .m3-btn-tonal:hover { transform: translateY(-1px); filter: brightness(0.97); }
+  .dark .m3-btn-tonal:hover { filter: brightness(1.12); }
+
+  .m3-kpi {
+    background-color: var(--md-surface-container-low);
+    color: var(--md-on-surface);
+    border: 1px solid var(--md-outline-variant);
+    border-radius: 26px;
+    box-shadow: var(--md-shadow-sm);
+    transition: transform 0.24s var(--m3-spring), border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .m3-kpi:hover {
+    transform: translateY(-3px);
+    border-color: var(--md-tertiary);
+    box-shadow: var(--md-shadow-md);
+  }
+
+  .m3-headsup {
+    background-color: var(--md-surface-container-low);
+    color: var(--md-on-surface);
+    border: 1px solid var(--md-outline-variant);
+    box-shadow: var(--md-shadow-lg);
+    animation: m3PopIn 0.22s var(--m3-spring);
+  }
+
+  @keyframes m3PopIn {
+    from { opacity: 0; transform: translateY(14px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .fade-in { animation: fadeIn 0.22s var(--m3-standard); }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  mark.hl {
+    background: #facc15;
+    color: #0f172a;
+    padding: 0 4px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+
+  ::-webkit-scrollbar { width: 7px; height: 7px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(128, 145, 168, 0.32); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(128, 145, 168, 0.52); }
+
+  #printContainer { display: none; }
+  @media print {
+    body { background: #fff !important; color: #111827 !important; }
+    #appShell, #headsupModal, #searchModal, #toast { display: none !important; }
+    #printContainer { display: block !important; padding: 12px; color: #111827 !important; }
+    .print-section { break-inside: avoid; margin-bottom: 18px; border-bottom: 1px solid #cbd5e1; padding-bottom: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="appShell" class="min-h-screen flex flex-col lg:flex-row">
+  <!-- Mobile Backdrop -->
+  <div id="sidebarBackdrop" class="fixed inset-0 bg-slate-950/65 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
+  <!-- Material 3 Expressive Navigation Rail / Drawer -->
+  <aside id="sidebar" style="background-color: var(--md-rail-bg); color: var(--md-rail-text);" class="fixed lg:sticky top-0 left-0 z-50 h-screen w-72 shrink-0 flex flex-col border-r border-white/10 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out">
+    <!-- Brand -->
+    <div class="px-5 py-5 border-b border-white/10 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-11 h-11 rounded-[16px] bg-gradient-to-br from-[#f1cf82] to-[#b99655] flex items-center justify-center text-[#1d1403] font-display font-extrabold text-sm tracking-tight shadow-lg shrink-0">
+          A2M
+        </div>
+        <div class="min-w-0">
+          <div class="font-display text-sm font-extrabold text-white truncate">Manual A2M</div>
+          <div class="text-[11px] truncate" style="color: #e8cfa0;">Assessoria Condominial</div>
+        </div>
+      </div>
+      <button type="button" id="closeSidebarBtn" class="lg:hidden p-2 rounded-full text-slate-300 hover:bg-white/10" aria-label="Fechar menu">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Primary Full-Page Views -->
+    <div class="p-3 space-y-1.5">
+      <div class="px-3 pt-1 pb-1 text-[10px] font-bold uppercase tracking-widest" style="color: var(--md-rail-muted);">Navegação</div>
+
+      <button type="button" data-view="home" class="nav-view-btn w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm transition-all">
+        <span class="flex items-center gap-3">
+          <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i>
+          <span>Painel Rápido</span>
+        </span>
+      </button>
+
+      <button type="button" data-view="normas" class="nav-view-btn w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm transition-all">
+        <span class="flex items-center gap-3">
+          <i data-lucide="book-open" class="w-4 h-4 shrink-0"></i>
+          <span>Normas & Regras</span>
+        </span>
+        <span class="nav-badge text-[11px] px-2.5 py-0.5 rounded-full font-bold">11</span>
+      </button>
+
+      <button type="button" data-view="scripts" class="nav-view-btn w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm transition-all">
+        <span class="flex items-center gap-3">
+          <i data-lucide="message-square-quote" class="w-4 h-4 shrink-0"></i>
+          <span>Central de Scripts</span>
+        </span>
+        <span class="nav-badge text-[11px] px-2.5 py-0.5 rounded-full font-bold">7</span>
+      </button>
+
+      <button type="button" data-view="feriados" class="nav-view-btn w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm transition-all">
+        <span class="flex items-center gap-3">
+          <i data-lucide="calendar-heart" class="w-4 h-4 shrink-0"></i>
+          <span>Feriados Goiânia</span>
+        </span>
+        <span class="nav-badge text-[10px] px-2 py-0.5 rounded-full font-bold">GO</span>
+      </button>
+
+      <button type="button" data-view="prazos" class="nav-view-btn w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm transition-all">
+        <span class="flex items-center gap-3">
+          <i data-lucide="calculator" class="w-4 h-4 shrink-0"></i>
+          <span>Jornada & Prazos</span>
+        </span>
+      </button>
+    </div>
+
+    <!-- Direct Section Shortcuts -->
+    <div class="px-3 pt-2 pb-3 flex-1 overflow-y-auto border-t border-white/10">
+      <div class="px-3 py-1.5 flex items-center justify-between">
+        <span class="text-[10px] font-bold uppercase tracking-widest" style="color: var(--md-rail-muted);">Índice Direto</span>
+        <span id="sidebarReadCounter" class="text-[11px] font-bold text-[#f0cc7e]">0/11 lidas</span>
+      </div>
+      <div id="sidebarSectionsList" class="space-y-0.5 mt-1"></div>
+    </div>
+
+    <!-- Footer Progress -->
+    <div class="p-4 border-t border-white/10 bg-black/20">
+      <div class="flex items-center justify-between text-[11px] mb-1.5" style="color: var(--md-rail-muted);">
+        <span>Progresso de leitura</span>
+        <span id="sidebarReadPct" class="font-bold text-[#f0cc7e]">0%</span>
+      </div>
+      <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-3">
+        <div id="sidebarReadBar" class="h-full bg-gradient-to-r from-[#d4ae61] to-[#f5d996] rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+      <div class="text-[11px] leading-relaxed" style="color: var(--md-rail-muted);">
+        <span class="text-white font-semibold">Versão 1.3</span> · 24/11/2026<br>
+        Criado por <span class="text-white font-medium">Douglas Silva</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Workspace -->
+  <div class="flex-1 flex flex-col min-w-0">
+    <!-- Expressive Top App Bar -->
+    <header style="background-color: var(--md-surface-container-low); border-color: var(--md-outline-variant);" class="sticky top-0 z-30 border-b px-4 sm:px-6 py-3.5 transition-colors">
+      <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <button type="button" id="openSidebarBtn" class="lg:hidden p-2.5 rounded-full m3-tonal m3-text" aria-label="Abrir menu">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+          <div class="min-w-0">
+            <h1 id="pageTitle" class="font-display text-base sm:text-xl font-extrabold m3-text truncate">Painel Rápido</h1>
+            <p id="pageSubtitle" class="text-xs m3-muted truncate hidden sm:block">A2M Assessoria Jurídica Condominial · Goiânia-GO · Uso interno</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <!-- Search Pill -->
+          <button type="button" id="openSearchBtn" class="flex items-center gap-2.5 px-4 py-2.5 rounded-full m3-tonal m3-text hover:opacity-90 text-sm font-medium border m3-border transition-all">
+            <i data-lucide="search" class="w-4 h-4 m3-muted"></i>
+            <span class="hidden md:inline m3-muted">Buscar regra, feriado ou script...</span>
+            <span class="md:hidden text-xs font-semibold">Buscar</span>
+            <kbd class="hidden sm:inline-block px-2 py-0.5 text-[10px] font-bold rounded-full m3-card m3-muted">Ctrl K</kbd>
+          </button>
+
+          <!-- Theme Toggle Pill -->
+          <button type="button" id="themeToggleBtn" class="p-2.5 rounded-full m3-tonal m3-text border m3-border hover:opacity-90 transition-all" title="Alternar modo claro/noturno" aria-label="Alternar tema">
+            <i data-lucide="moon" id="themeIconMoon" class="w-4 h-4"></i>
+            <i data-lucide="sun" id="themeIconSun" class="w-4 h-4 hidden"></i>
+          </button>
+
+          <!-- Print Pill -->
+          <button type="button" id="printBtn" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full m3-btn-tonal text-xs font-bold" title="Imprimir ou salvar em PDF">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>PDF</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Page Content -->
+    <main id="mainContent" class="flex-1 px-4 sm:px-6 py-6 max-w-6xl w-full mx-auto"></main>
+
+    <!-- Footer -->
+    <footer style="border-color: var(--md-outline-variant);" class="border-t py-5 px-4 sm:px-6 text-center text-xs m3-muted">
+      <strong class="m3-text">A2M Assessoria Jurídica Condominial</strong> · Manual Institucional de Atendimento, Conduta e Procedimentos · Goiânia-GO · Versão 1.3 · Criado por <strong class="m3-text">Douglas Silva</strong>
+    </footer>
+  </div>
+</div>
+
+<!-- ============================================================
+     COMPACT HEADS-UP POPUP (Only for quick KPI peeks & simple notices)
+     ============================================================ -->
+<div id="headsupModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/55 backdrop-blur-xs">
+  <div class="m3-headsup w-full max-w-md rounded-[28px] overflow-hidden">
+    <div id="headsupContent"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     GLOBAL SEARCH MODAL (Ctrl+K)
+     ============================================================ -->
+<div id="searchModal" class="fixed inset-0 z-50 hidden items-start justify-center pt-10 sm:pt-16 px-4 bg-slate-950/65 backdrop-blur-sm">
+  <div class="m3-headsup w-full max-w-2xl rounded-[28px] overflow-hidden">
+    <div style="border-color: var(--md-outline-variant);" class="flex items-center gap-3 px-5 py-4 border-b">
+      <i data-lucide="search" class="w-5 h-5 shrink-0" style="color: var(--md-tertiary);"></i>
+      <input id="globalSearchInput" type="text" placeholder="Pesquisar regra, feriado, script ou palavra-chave..." class="w-full bg-transparent text-sm sm:text-base m3-text placeholder:opacity-60 focus:outline-none">
+      <button type="button" id="clearGlobalSearchBtn" class="hidden p-1.5 rounded-full m3-muted hover:opacity-80" aria-label="Limpar busca">
+        <i data-lucide="x-circle" class="w-4 h-4"></i>
+      </button>
+      <button type="button" id="closeSearchBtn" class="px-3 py-1 text-[11px] font-bold rounded-full m3-tonal m3-text">ESC</button>
+    </div>
+
+    <div style="border-color: var(--md-outline-variant); background-color: var(--md-surface-container);" class="px-5 py-2.5 border-b flex items-center gap-2 flex-wrap">
+      <span class="text-[11px] font-bold m3-muted">Populares:</span>
+      <button type="button" data-q="expediente" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">expediente</button>
+      <button type="button" data-q="CSAT" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">CSAT</button>
+      <button type="button" data-q="acordo" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">acordo</button>
+      <button type="button" data-q="boleto" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">boleto</button>
+      <button type="button" data-q="Cobmais" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">Cobmais</button>
+      <button type="button" data-q="feriado" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">feriado</button>
+    </div>
+
+    <div id="globalSearchResults" class="max-h-[58vh] overflow-y-auto p-3 space-y-2"></div>
+  </div>
+</div>
+
+<!-- Toast Heads-Up -->
+<div id="toast" class="fixed bottom-5 right-5 z-[60] pointer-events-none opacity-0 translate-y-3 transition-all duration-200">
+  <div style="background-color: var(--md-primary); color: var(--md-on-primary);" class="flex items-center gap-2.5 px-5 py-3 rounded-full text-sm font-bold shadow-2xl">
+    <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0"></i>
+    <span id="toastMessage">Ação concluída</span>
+  </div>
+</div>
+
+<!-- Print Version -->
+<div id="printContainer"></div>
+
+<script>
+// ============================================================
+// VERIFIED HOLIDAYS DATA — GOIÂNIA-GO (2026 & 2027)
+// ============================================================
+const HOLIDAYS = [
+  // 2026
+  { date: '2026-01-01', name: 'Ano Novo (Confraternização Universal)', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2026-02-16', name: 'Segunda-feira de Carnaval', scope: 'facultativo', law: 'Ponto Facultativo' },
+  { date: '2026-02-17', name: 'Carnaval', scope: 'facultativo', law: 'Ponto Facultativo · Feriado bancário FEBRABAN' },
+  { date: '2026-02-18', name: 'Quarta-feira de Cinzas', scope: 'facultativo', law: 'Ponto Facultativo (bancos após 12h)' },
+  { date: '2026-04-03', name: 'Sexta-feira Santa', scope: 'nacional', law: 'Lei Federal nº 9.093/1995' },
+  { date: '2026-04-21', name: 'Dia de Tiradentes', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2026-05-01', name: 'Dia Mundial do Trabalho', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2026-05-24', name: 'Nossa Senhora Auxiliadora (Padroeira de Goiânia)', scope: 'municipal', law: 'Lei Municipal nº 701/1956' },
+  { date: '2026-06-04', name: 'Corpus Christi', scope: 'municipal', law: 'Lei Municipal nº 9.553/2015' },
+  { date: '2026-07-26', name: 'Fundação da Cidade de Goiás', scope: 'estadual', law: 'Lei Estadual nº 13.784/2001' },
+  { date: '2026-09-07', name: 'Independência do Brasil', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2026-10-12', name: 'Nossa Senhora Aparecida', scope: 'nacional', law: 'Lei Federal nº 6.802/1980' },
+  { date: '2026-10-24', name: 'Aniversário de Goiânia', scope: 'municipal', law: 'Lei Municipal nº 6.968/1991' },
+  { date: '2026-11-02', name: 'Dia de Finados', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2026-11-15', name: 'Proclamação da República', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2026-11-20', name: 'Dia Nacional de Zumbi e da Consciência Negra', scope: 'nacional', law: 'Lei Federal nº 14.759/2023' },
+  { date: '2026-12-25', name: 'Natal', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  // 2027
+  { date: '2027-01-01', name: 'Ano Novo (Confraternização Universal)', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2027-02-08', name: 'Segunda-feira de Carnaval', scope: 'facultativo', law: 'Ponto Facultativo' },
+  { date: '2027-02-09', name: 'Carnaval', scope: 'facultativo', law: 'Ponto Facultativo · Feriado bancário FEBRABAN' },
+  { date: '2027-02-10', name: 'Quarta-feira de Cinzas', scope: 'facultativo', law: 'Ponto Facultativo (bancos após 12h)' },
+  { date: '2027-03-26', name: 'Sexta-feira Santa', scope: 'nacional', law: 'Lei Federal nº 9.093/1995' },
+  { date: '2027-04-21', name: 'Dia de Tiradentes', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2027-05-01', name: 'Dia Mundial do Trabalho', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2027-05-24', name: 'Nossa Senhora Auxiliadora (Padroeira de Goiânia)', scope: 'municipal', law: 'Lei Municipal nº 701/1956' },
+  { date: '2027-05-27', name: 'Corpus Christi', scope: 'municipal', law: 'Lei Municipal nº 9.553/2015' },
+  { date: '2027-07-26', name: 'Fundação da Cidade de Goiás', scope: 'estadual', law: 'Lei Estadual nº 13.784/2001' },
+  { date: '2027-09-07', name: 'Independência do Brasil', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2027-10-12', name: 'Nossa Senhora Aparecida', scope: 'nacional', law: 'Lei Federal nº 6.802/1980' },
+  { date: '2027-10-24', name: 'Aniversário de Goiânia', scope: 'municipal', law: 'Lei Municipal nº 6.968/1991' },
+  { date: '2027-11-02', name: 'Dia de Finados', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2027-11-15', name: 'Proclamação da República', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' },
+  { date: '2027-11-20', name: 'Dia Nacional de Zumbi e da Consciência Negra', scope: 'nacional', law: 'Lei Federal nº 14.759/2023' },
+  { date: '2027-12-25', name: 'Natal', scope: 'nacional', law: 'Lei Federal nº 10.607/2002' }
+];
+
+const HOLIDAY_MAP = {};
+HOLIDAYS.forEach(h => { HOLIDAY_MAP[h.date] = h; });
+
+const MONTH_NAMES = [
+  'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+];
+
+// ============================================================
+// SIMPLE HEADS-UP CARDS FOR KPI CLICKS
+// ============================================================
+const KPI_HEADSUPS = {
+  expediente: {
+    icon: 'alarm-clock',
+    badge: 'Seção 09 · Jornada',
+    title: 'Horário de Expediente',
+    body: 'Segunda a quinta-feira das 08h00 às 18h00 e sexta-feira das 08h00 às 17h00. O login nos sistemas ocorre sempre às 08h00, entrando e saindo no horário. Não efetue atendimentos fora do expediente.',
+    ctaLabel: 'Ler Seção 09 completa',
+    ctaSection: 's9'
+  },
+  pausas: {
+    icon: 'coffee',
+    badge: 'Seção 09 · Intervalos',
+    title: 'Almoço e Pausas de Lanche',
+    body: 'Almoço obrigatório de 1 hora, além de pausa de lanche de 15 minutos pela manhã e 15 minutos à tarde. Em qualquer eventualidade, comunique a liderança.',
+    ctaLabel: 'Ler Seção 09 completa',
+    ctaSection: 's9'
+  },
+  csat: {
+    icon: 'award',
+    badge: 'Seção 11 · Qualidade',
+    title: 'Meta Mensal de CSAT: 84,5%',
+    body: 'A meta mensal de satisfação dos atendimentos (CSAT) é de 84,5% no resultado geral da equipe. Use o Script 10.4 ao encerrar demandas resolvidas para incentivar a avaliação.',
+    ctaLabel: 'Ler Seção 11 completa',
+    ctaSection: 's11'
+  },
+  acionamentos: {
+    icon: 'calendar-days',
+    badge: 'Seção 05 · Acionamentos',
+    title: 'Validade de 3 Dias Úteis',
+    body: 'Acionamentos por e-mail, SMS, ligação e ASC valem por 3 dias úteis a partir do 1º acionamento no mês (reinicia na importação da nova base). Cobmais isolado pode não validar.',
+    ctaLabel: 'Ler Seção 05 completa',
+    ctaSection: 's5'
+  },
+  acordos: {
+    icon: 'handshake',
+    badge: 'Seção 06 · Acordos',
+    title: 'Prazo Padrão de 10 Dias Corridos',
+    body: 'Todo acordo gerado tem prazo padrão de 10 dias corridos. Antes de agendar, verifique todas as cotas vinculadas à titularidade; se vencer, faça um novo agendamento sem prorrogar o anterior.',
+    ctaLabel: 'Ler Seção 06 completa',
+    ctaSection: 's6'
+  }
+};
+
+// ============================================================
+// MANUAL CONTENT
+// ============================================================
+const CATEGORIES = [
+  { id: 'all', label: 'Todas (11)' },
+  { id: 'atendimento', label: 'WhatsApp & Postura' },
+  { id: 'negociacao', label: 'Acordos & Acionamentos' },
+  { id: 'rotina', label: 'Jornada, E-mails & CSAT' },
+  { id: 'scripts', label: 'Scripts' }
+];
+
+const SECTIONS = [
+  {
+    id: 's1',
+    num: '01',
+    title: 'Apresentação e objetivos',
+    shortTitle: 'Apresentação e objetivos',
+    categories: ['atendimento'],
+    icon: 'compass',
+    summary: 'Padrão único de atendimento, redução de erros, responsabilidades claras e consulta contínua.',
+    blocks: [
+      {
+        type: 'list',
+        items: [
+          'Estabelecer um padrão único de atendimento para todos os consultores.',
+          'Reduzir erros operacionais, retrabalho, informações divergentes e falhas de acompanhamento.',
+          'Definir responsabilidades, critérios de atuação e situações que exigem direcionamento à supervisão.',
+          'Servir como material de consulta, integração e orientação contínua da equipe.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 's2',
+    num: '02',
+    title: 'Conduta e postura profissional',
+    shortTitle: 'Conduta e postura',
+    categories: ['atendimento'],
+    icon: 'shield-check',
+    summary: 'Comportamento no expediente, foco sem celular pessoal e comunicação formal, cordial e objetiva.',
+    blocks: [
+      {
+        type: 'subsection',
+        heading: '2.1. Postura no ambiente de trabalho',
+        items: [
+          'Manter comportamento profissional, respeitoso e compatível com o ambiente de trabalho.',
+          'Evitar o uso de celulares pessoais durante o expediente, especialmente quando comprometer a concentração, a produtividade ou a qualidade dos atendimentos.',
+          'Evitar conversas e atividades particulares que prejudiquem a execução das tarefas.'
+        ]
+      },
+      {
+        type: 'subsection',
+        heading: '2.2. Comunicação profissional',
+        items: [
+          'Utilizar linguagem formal, cordial, clara e objetiva.',
+          'Não utilizar ironias, discussões, respostas ríspidas, provocações ou expressões que possam constranger o cliente.',
+          'Não transmitir informações, prazos, condições ou garantias sem confirmação prévia.',
+          'Utilizar emojis com moderação e somente quando compatíveis com o contexto.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 's3',
+    num: '03',
+    title: 'Padronização do atendimento via WhatsApp',
+    shortTitle: 'Atendimento WhatsApp',
+    categories: ['atendimento'],
+    icon: 'message-circle',
+    summary: 'Estrutura de início-meio-fim, regra para áudios, tempo de espera, ausência de resposta e fora de escopo.',
+    blocks: [
+      {
+        type: 'steps',
+        heading: '3.1. Estrutura obrigatória: início, meio e fim',
+        steps: [
+          { title: 'Início', desc: 'Cumprimentar o cliente e iniciar a conversa de forma cordial.' },
+          { title: 'Desenvolvimento', desc: 'Compreender a solicitação, verificar as informações, conduzir a tratativa e manter o cliente informado.' },
+          { title: 'Encerramento', desc: 'Confirmar o que foi realizado ou explicar a providência pendente e finalizar cordialmente.' }
+        ]
+      },
+      {
+        type: 'text',
+        heading: '3.2. Mensagens de áudio',
+        text: 'O atendimento deverá ocorrer prioritariamente por mensagens escritas. O consultor somente deverá enviar áudio quando o cliente deixar expressamente claro que prefere ou solicita esse formato.'
+      },
+      {
+        type: 'text',
+        heading: '3.3. Tempo de espera',
+        text: 'O cliente não deverá permanecer por tempo excessivo sem retorno. Se a consulta ou validação demandar tempo, o consultor deverá informar que está verificando a solicitação e atualizar o cliente sempre que necessário.'
+      },
+      {
+        type: 'text',
+        heading: '3.4. Atendimento sem resposta do cliente',
+        text: 'Se o cliente deixar de responder, o consultor deverá realizar <strong>uma tentativa de contato</strong>. Não havendo retorno, poderá encerrar o atendimento, registrando o encerramento conforme o procedimento interno.'
+      },
+      {
+        type: 'text',
+        heading: '3.5. Demandas fora da competência da A2M',
+        text: 'O consultor deverá explicar, de forma cordial, que a solicitação não está dentro das atribuições da A2M e orientar o cliente a procurar o canal ou departamento responsável. Não deverá assumir tratativas ou fornecer informações sem validação.'
+      }
+    ]
+  },
+  {
+    id: 's4',
+    num: '04',
+    title: 'Conferência e segurança das informações',
+    shortTitle: 'Conferência e segurança',
+    categories: ['atendimento', 'negociacao'],
+    icon: 'search-check',
+    summary: 'Consulta completa aos sistemas, checagem rigorosa antes de boleto/acordo e protocolo para divergências.',
+    blocks: [
+      {
+        type: 'list',
+        items: [
+          'Antes de apresentar uma conclusão, consultar todos os sistemas disponíveis e pertinentes à solicitação.',
+          'Verificar titularidade, cotas, débitos, pagamentos, acordos, agendamentos e histórico conforme a natureza do atendimento.',
+          'Antes de emitir boleto, confirmar pagamento, informar valores ou realizar acordo ou agendamento, conferir rigorosamente os dados correspondentes.',
+          'Não concluir com base em consulta parcial, informação desatualizada ou suposição.',
+          'Em caso de divergência entre sistemas, documentos ou informações do cliente, não apresentar conclusão definitiva: registrar a inconsistência e buscar validação.'
+        ]
+      },
+      {
+        type: 'callout',
+        tone: 'warning',
+        label: 'Regra de segurança',
+        text: 'Na dúvida, não presumir. Conferir, registrar e direcionar para validação antes de orientar o cliente.'
+      }
+    ]
+  },
+  {
+    id: 's5',
+    num: '05',
+    title: 'Gestão de acionamentos e responsabilidade pelos atendimentos',
+    shortTitle: 'Acionamentos e posse',
+    categories: ['negociacao'],
+    icon: 'user-check',
+    summary: 'Validade de 3 dias úteis, clientes vinculados (e-mail, SMS, ligação, ASC), transferências e restrições.',
+    blocks: [
+      {
+        type: 'subsection',
+        heading: '5.1. Validade dos acionamentos',
+        items: [
+          'Os acionamentos por e-mail, SMS, ligação e ASC terão validade de <strong>3 (três) dias úteis</strong> para fins de atribuição ao consultor, contados a partir do primeiro acionamento no mês.',
+          'A contagem reinicia no dia da importação da nova base.',
+          'Acionamentos realizados exclusivamente pelo Cobmais (ligação e SMS) poderão não ser reconhecidos como acionamento válido, conforme os critérios internos.'
+        ]
+      },
+      {
+        type: 'text',
+        heading: '5.2. Clientes vinculados',
+        text: 'Deverão ser verificados todos os meios de contato previstos: e-mail, SMS, ligação e ASC. Caso não haja o registro de todos os meios exigidos, o atendimento ficará com o consultor para o qual a demanda foi direcionada.'
+      },
+      {
+        type: 'subsection',
+        heading: '5.3. Distribuição e transferência',
+        items: [
+          'A transferência de atendimento não poderá provocar perda de informações, duplicidade de tratativas ou abandono do cliente.'
+        ]
+      },
+      {
+        type: 'text',
+        heading: '5.4. Ligações sem atendimento efetivo',
+        text: 'Quando uma ligação não resultar em atendimento efetivo e não houver acionamento prévio válido, caso o cliente retorne, o atendimento será realizado pelo consultor que receber a ligação.'
+      },
+      {
+        type: 'callout',
+        tone: 'warning',
+        label: '5.5. Restrições',
+        text: 'É proibida a realização de acionamentos em massa sem autorização ou procedimento institucional previamente estabelecido pela supervisão.'
+      }
+    ]
+  },
+  {
+    id: 's6',
+    num: '06',
+    title: 'Acordos, negociações e agendamentos',
+    shortTitle: 'Acordos e agendamentos',
+    categories: ['negociacao'],
+    icon: 'handshake',
+    summary: 'Prazo padrão de 10 dias corridos, renovação, checagem total de cotas, novo agendamento e acordo de outro consultor.',
+    blocks: [
+      {
+        type: 'subsection',
+        heading: '6.1. Prazo dos acordos',
+        items: [
+          'O prazo padrão do acordo gerado é de <strong>10 (dez) dias corridos</strong>.',
+          'A renovação poderá ocorrer quando tiverem sido realizadas as tentativas previstas (e-mail, SMS, ligação e ASC) e o cliente estabelecer nova data de pagamento, observados os critérios internos.',
+          'Se o cliente informar que pagará em data futura, deverá ser orientado a solicitar o acordo dentro do prazo aplicável.'
+        ]
+      },
+      {
+        type: 'subsection',
+        heading: '6.2. Agendamentos',
+        items: [
+          'Antes de agendar, pesquisar e verificar todas as cotas vinculadas à titularidade do cliente.',
+          'O agendamento deverá considerar a situação completa das cotas, evitando tratativas isoladas que desconsiderem outros débitos.',
+          'Se um agendamento vencer e for necessário estabelecer nova data, deverá ser feito um <strong>novo agendamento</strong>, mediante nova conversa e confirmação do cliente. Não se deve simplesmente prorrogar o anterior.'
+        ]
+      },
+      {
+        type: 'text',
+        heading: '6.3. Agendamento sem acompanhamento do consultor',
+        text: 'Se havia agendamento, o consultor responsável não compareceu à tratativa na data prevista e não houve atendimento efetivo, outro consultor poderá prosseguir caso o cliente entre em contato solicitando o boleto para aquela data.'
+      },
+      {
+        type: 'callout',
+        tone: 'gold',
+        label: '6.4. Acordo de outro consultor',
+        text: 'Se houver necessidade de gerar boleto de acordo pertencente à tratativa de outro consultor, a supervisão deverá ser comunicada.'
+      }
+    ]
+  },
+  {
+    id: 's7',
+    num: '07',
+    title: 'Gestão de pendências e tempo de resposta',
+    shortTitle: 'Pendências e retorno',
+    categories: ['rotina'],
+    icon: 'clock',
+    summary: 'Monitoramento de conversas abertas, registro no Cobmais e diferença entre encerrar conversa e resolver demanda.',
+    blocks: [
+      {
+        type: 'list',
+        items: [
+          'Monitorar as conversas em aberto e priorizar clientes que aguardam retorno.',
+          'Não deixar atendimento sem acompanhamento, justificativa ou registro de sua situação.',
+          'Quando a solução depender de consulta, validação ou retorno de outro setor, informar o cliente e registrar a pendência no Cobmais.',
+          'Acompanhar as solicitações encaminhadas até que haja devolutiva ou orientação sobre a próxima providência.',
+          'Ao final do expediente, os atendimentos concluídos deverão estar encerrados; os que dependerem de providências deverão ficar registrados, com status e próximo passo definidos.'
+        ]
+      },
+      {
+        type: 'callout',
+        tone: 'gold',
+        label: 'Distinção importante',
+        text: 'Encerrar a conversa não significa considerar resolvida uma demanda que ainda depende de providência interna. A pendência deve permanecer registrada e acompanhada.'
+      }
+    ]
+  },
+  {
+    id: 's8',
+    num: '08',
+    title: 'Gestão de e-mails e comunicação com a supervisão',
+    shortTitle: 'E-mails e supervisão',
+    categories: ['rotina'],
+    icon: 'mail',
+    summary: 'Centralização de respostas na supervisão, regra de cópia (CC) em envios operacionais e alinhamento com WhatsApp.',
+    blocks: [
+      {
+        type: 'list',
+        items: [
+          'Os consultores não devem responder diretamente aos e-mails recebidos de clientes. Essa tratativa é centralizada na supervisão.',
+          'Ao receber e-mail de cliente, o consultor deverá encaminhá-lo ou sinalizá-lo à supervisão, sem apresentar resposta ou posicionamento por conta própria.',
+          'Os consultores poderão enviar e-mails quando houver necessidade operacional, desde que incluam a supervisão em cópia (CC).',
+          'O envio deverá conter contexto, histórico e informações suficientes para permitir a análise e o acompanhamento.',
+          'Quando o e-mail estiver relacionado a atendimento em andamento no WhatsApp, a existência dessa comunicação deverá ser registrada e sinalizada à supervisão, evitando duplicidade ou perda de informação.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 's9',
+    num: '09',
+    title: 'Jornada de trabalho e organização operacional',
+    shortTitle: 'Jornada operacional',
+    categories: ['rotina'],
+    icon: 'calendar-clock',
+    summary: 'Expediente (Seg–Qui 08h–18h, Sex 08h–17h), almoço de 1h, pausas de lanche de 15 min, comunicação à liderança e revisão final.',
+    blocks: [
+      {
+        type: 'subsection',
+        heading: '9.1. Horário de expediente e acesso aos sistemas',
+        items: [
+          '<strong>Segunda a quinta-feira:</strong> das <strong>08h00 às 18h00</strong>.',
+          '<strong>Sexta-feira:</strong> das <strong>08h00 às 17h00</strong>.',
+          'O login nos sistemas de atendimento deverá ocorrer sempre às <strong>08h00</strong>, respeitando a entrada e a saída no horário de expediente.',
+          '<strong>Não efetuar atendimentos fora do horário de expediente.</strong>'
+        ]
+      },
+      {
+        type: 'subsection',
+        heading: '9.2. Intervalo para almoço e pausas de lanche',
+        items: [
+          '<strong>Almoço (1 hora):</strong> a saída para o intervalo de almoço é obrigatória. Em caso de eventualidade que impeça o cumprimento do horário previsto, o consultor deverá comunicar a liderança/supervisão.',
+          '<strong>Pausa de lanche (manhã e tarde):</strong> <strong>15 (quinze) minutos</strong> no período da manhã e <strong>15 (quinze) minutos</strong> no período da tarde.'
+        ]
+      },
+      {
+        type: 'subsection',
+        heading: '9.3. Organização antes do encerramento (15 minutos finais)',
+        intro: 'Nos <strong>15 (quinze) minutos</strong> que antecedem o encerramento da jornada, o consultor deverá organizar os atendimentos e revisar:',
+        items: [
+          'Conversas sem resposta ou sem encerramento;',
+          'Clientes aguardando retorno;',
+          'Solicitações pendentes e demandas encaminhadas a outros setores;',
+          'Registros de acordos e agendamentos;',
+          'Atendimentos que necessitem de continuidade no próximo expediente.'
+        ],
+        outro: 'Ao final dessa revisão, o consultor deverá encerrar os atendimentos concluídos e esvaziar as pendências já resolvidas ou devidamente encaminhadas.'
+      },
+      {
+        type: 'callout',
+        tone: 'warning',
+        label: '9.4. Comunicação obrigatória com a liderança',
+        text: 'A liderança precisa ser comunicada em todas as situações que se fizerem necessárias, incluindo ausências, atrasos longos, demandas internas e qualquer eventualidade operacional.'
+      }
+    ]
+  },
+  {
+    id: 's10',
+    num: '10',
+    title: 'Scripts e modelos institucionais',
+    shortTitle: 'Scripts institucionais',
+    categories: ['scripts', 'atendimento'],
+    icon: 'message-square-quote',
+    summary: '7 modelos oficiais prontos para personalizar e copiar diretamente para o WhatsApp.',
+    blocks: [
+      { type: 'scripts_embed' }
+    ]
+  },
+  {
+    id: 's11',
+    num: '11',
+    title: 'Controle de qualidade, meta de CSAT e disposições finais',
+    shortTitle: 'Qualidade e CSAT',
+    categories: ['rotina', 'atendimento'],
+    icon: 'award',
+    summary: 'Meta mensal de CSAT de 84,5% geral, critérios de avaliação e alinhamento contínuo com a liderança.',
+    blocks: [
+      {
+        type: 'callout',
+        tone: 'gold',
+        label: 'Meta Mensal de CSAT: 84,5% geral',
+        text: 'O indicador de satisfação dos atendimentos (CSAT) tem como meta mensal 84,5% no resultado geral da equipe.'
+      },
+      {
+        type: 'list',
+        items: [
+          'As regras deste manual deverão ser observadas por todos os consultores.',
+          'Os atendimentos poderão ser avaliados quanto à cordialidade, clareza, correção das informações, cumprimento dos procedimentos e qualidade dos registros.',
+          'A liderança precisa ser comunicada em todas as situações que se fizerem necessárias — incluindo ausências, atrasos longos, demandas internas, falhas, dúvidas ou situações não previstas — para orientação e eventual atualização deste manual.'
+        ]
+      }
+    ]
+  }
+];
+
+const SCRIPTS = [
+  {
+    id: 'sc1',
+    code: '10.1',
+    title: 'Abertura de atendimento',
+    tag: 'Início',
+    hasVars: true,
+    template: '{SAUDACAO}, Sr.(a) {NOME}. Tudo bem? Me chamo {AGENTE}, vou dar continuidade ao seu atendimento e verificar as informações para auxiliá-lo(a).',
+    raw: 'Boa tarde, Sr.(a) [NOME]. Tudo bem? Me chamo [AGENTE], vou dar continuidade ao seu atendimento e verificar as informações para auxiliá-lo(a).'
+  },
+  {
+    id: 'sc2',
+    code: '10.2',
+    title: 'Identificação de débitos',
+    tag: 'Cobrança',
+    hasVars: false,
+    raw: 'Identificamos taxas condominiais em aberto vinculadas à sua titularidade. Vou verificar os detalhes para orientá-lo(a) corretamente.'
+  },
+  {
+    id: 'sc3',
+    code: '10.3',
+    title: 'Envio de boleto',
+    tag: 'Financeiro',
+    hasVars: false,
+    raw: 'Conforme solicitado, encaminho o boleto referente ao condomínio em atraso. Por gentileza, confira os dados antes de efetuar o pagamento.'
+  },
+  {
+    id: 'sc4',
+    code: '10.4',
+    title: 'Após resolução da demanda',
+    tag: 'Encerramento',
+    hasVars: false,
+    raw: 'Foi um prazer atendê-lo(a)! 😊 Se ficou satisfeito(a), sua avaliação com nota 5 é muito importante para nós. Agradecemos pela confiança e permanecemos à disposição. Tenha um ótimo dia!'
+  },
+  {
+    id: 'sc5',
+    code: '10.5',
+    title: 'Encerramento por ausência de resposta',
+    tag: 'Encerramento',
+    hasVars: false,
+    raw: 'Percebo que talvez esteja ocupado(a) neste momento. Por esse motivo, finalizarei o atendimento por agora. Caso precise de auxílio, permanecemos à disposição. Agradecemos o contato!'
+  },
+  {
+    id: 'sc6',
+    code: '10.6',
+    title: 'Direcionamento para outro setor',
+    tag: 'Fora de escopo',
+    hasVars: false,
+    raw: 'Compreendo sua solicitação. Entretanto, essa demanda não está dentro das atribuições da A2M Assessoria Jurídica Condominial. Orientamos que entre em contato diretamente com o setor responsável, por meio dos canais oficiais de atendimento. Permanecemos à disposição para auxiliar nas questões relacionadas às cobranças condominiais sob nossa responsabilidade.'
+  },
+  {
+    id: 'sc7',
+    code: '10.7',
+    title: 'Demanda em análise interna',
+    tag: 'Pendência',
+    hasVars: false,
+    raw: 'Sua solicitação precisa passar por uma verificação interna. Assim que houver retorno do setor responsável, daremos continuidade à tratativa e manteremos você informado(a).'
+  }
+];
+
+const QUICK_SCENARIOS = [
+  {
+    id: 'q1',
+    icon: 'mail-warning',
+    title: 'Cliente enviou e-mail',
+    badge: 'Seção 08',
+    sectionId: 's8',
+    answer: 'Não responda diretamente. Encaminhe ou sinalize o e-mail à supervisão sem apresentar posicionamento próprio. Se houver atendimento em andamento no WhatsApp, registre e sinalize à supervisão.',
+    scriptId: null
+  },
+  {
+    id: 'q2',
+    icon: 'message-circle-off',
+    title: 'Cliente parou de responder',
+    badge: 'Seção 03',
+    sectionId: 's3',
+    answer: 'Realize 1 (uma) tentativa de contato. Se não houver retorno, encerre o atendimento utilizando o modelo oficial e registre o encerramento conforme o procedimento interno.',
+    scriptId: 'sc5'
+  },
+  {
+    id: 'q3',
+    icon: 'alert-triangle',
+    title: 'Divergência entre sistemas',
+    badge: 'Seção 04',
+    sectionId: 's4',
+    answer: 'Nunca presuma nem apresente conclusão definitiva. Registre a inconsistência e direcione para validação antes de orientar o cliente.',
+    scriptId: 'sc7'
+  },
+  {
+    id: 'q4',
+    icon: 'calendar-x',
+    title: 'Agendamento venceu',
+    badge: 'Seção 06',
+    sectionId: 's6',
+    answer: 'Não prorrogue o agendamento anterior. Verifique todas as cotas vinculadas à titularidade e faça um novo agendamento mediante nova conversa e confirmação do cliente.',
+    scriptId: null
+  },
+  {
+    id: 'q5',
+    icon: 'users',
+    title: 'Acordo de outro consultor',
+    badge: 'Seção 06',
+    sectionId: 's6',
+    answer: 'Precisa gerar boleto de acordo pertencente à tratativa de outro consultor? Comunique a supervisão antes de prosseguir.',
+    scriptId: null
+  },
+  {
+    id: 'q6',
+    icon: 'arrow-up-right',
+    title: 'Assunto fora da A2M',
+    badge: 'Seção 03',
+    sectionId: 's3',
+    answer: 'Explique cordialmente que a demanda está fora das atribuições da A2M e oriente o cliente a buscar o canal responsável. Não assuma tratativas sem validação.',
+    scriptId: 'sc6'
+  },
+  {
+    id: 'q7',
+    icon: 'mic-off',
+    title: 'Posso enviar áudio?',
+    badge: 'Seção 03',
+    sectionId: 's3',
+    answer: 'O atendimento é prioritariamente por texto. Só envie áudio quando o cliente deixar expressamente claro que prefere ou solicita esse formato.',
+    scriptId: null
+  },
+  {
+    id: 'q8',
+    icon: 'clipboard-list',
+    title: 'Depende de outro setor',
+    badge: 'Seção 07',
+    sectionId: 's7',
+    answer: 'Informe o cliente, registre a pendência no Cobmais e acompanhe até a devolutiva. Encerrar a conversa não significa que a pendência foi resolvida.',
+    scriptId: 'sc7'
+  },
+  {
+    id: 'q9',
+    icon: 'clock-alert',
+    title: 'Atendimento fora do horário',
+    badge: 'Seção 09',
+    sectionId: 's9',
+    answer: 'Não efetue atendimentos fora do horário de expediente (Seg–Qui das 08h00 às 18h00 e Sex das 08h00 às 17h00). Respeite sempre os horários de entrada e saída.',
+    scriptId: null
+  },
+  {
+    id: 'q10',
+    icon: 'megaphone',
+    title: 'Ausência, atraso ou demanda interna',
+    badge: 'Seção 09',
+    sectionId: 's9',
+    answer: 'Comunique a liderança imediatamente em todas as situações necessárias: ausências, atrasos longos, demandas internas ou qualquer eventualidade no expediente.',
+    scriptId: null
+  }
+];
+
+// ============================================================
+// STATE MANAGEMENT
+// ============================================================
+function loadStorage(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function saveStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {}
+}
+
+function getAutoGreeting() {
+  const h = new Date().getHours();
+  if (h >= 5 && h < 12) return 'Bom dia';
+  if (h >= 12 && h < 18) return 'Boa tarde';
+  return 'Boa noite';
+}
+
+const nowDate = new Date();
+const defaultCalYear = (nowDate.getFullYear() === 2026 || nowDate.getFullYear() === 2027) ? nowDate.getFullYear() : 2026;
+const defaultCalMonth = nowDate.getMonth();
+
+const state = {
+  view: 'home', // 'home' | 'normas' | 'scripts' | 'feriados' | 'prazos'
+  activeSectionId: 's1',
+  normasCategory: 'all',
+  normasViewMode: 'focus', // 'focus' | 'all'
+  selectedScenarioId: 'q1',
+  scriptTagFilter: 'all',
+  agentName: loadStorage('a2m_agentName', ''),
+  clientName: '',
+  greeting: getAutoGreeting(),
+  readSections: loadStorage('a2m_readSections', []),
+  pinnedSections: loadStorage('a2m_pinnedSections', []),
+  calcDate: nowDate.toISOString().slice(0, 10),
+  skipHolidaysInCalc: true,
+  calYear: defaultCalYear,
+  calMonth: defaultCalMonth,
+  calScopeFilter: 'all',
+  selectedHolidayDate: null,
+  darkMode: loadStorage('a2m_darkMode', false)
+};
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function normalizeText(str) {
+  return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function escapeHtml(str) {
+  return (str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function highlightText(text, query) {
+  if (!query) return escapeHtml(text);
+  const safe = escapeHtml(text);
+  const escapedQ = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const rx = new RegExp('(' + escapedQ + ')', 'gi');
+  return safe.replace(rx, '<mark class="hl">$1</mark>');
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  const msgEl = document.getElementById('toastMessage');
+  if (!el || !msgEl) return;
+  msgEl.textContent = msg;
+  el.classList.remove('opacity-0', 'translate-y-3', 'pointer-events-none');
+  el.classList.add('opacity-100', 'translate-y-0');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    el.classList.add('opacity-0', 'translate-y-3', 'pointer-events-none');
+    el.classList.remove('opacity-100', 'translate-y-0');
+  }, 2200);
+}
+
+function copyText(text, successMsg) {
+  const done = () => showToast(successMsg || 'Texto copiado!');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => {
+      fallbackCopy(text);
+      done();
+    });
+  } else {
+    fallbackCopy(text);
+    done();
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+function getResolvedScript(sc) {
+  if (!sc.hasVars) return sc.raw;
+  const nome = state.clientName.trim() || '[NOME]';
+  const agente = state.agentName.trim() || '[AGENTE]';
+  return sc.template
+    .replace('{SAUDACAO}', state.greeting)
+    .replace('{NOME}', nome)
+    .replace('{AGENTE}', agente);
+}
+
+function getResolvedScriptHtml(sc) {
+  if (!sc.hasVars) return escapeHtml(sc.raw);
+  const nome = state.clientName.trim();
+  const agente = state.agentName.trim();
+  const nomeHtml = nome
+    ? `<span style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="px-2 py-0.5 rounded-full font-bold">${escapeHtml(nome)}</span>`
+    : `<span class="px-2 py-0.5 rounded-full m3-tonal-high m3-text font-mono text-xs">[NOME]</span>`;
+  const agenteHtml = agente
+    ? `<span style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="px-2 py-0.5 rounded-full font-bold">${escapeHtml(agente)}</span>`
+    : `<span class="px-2 py-0.5 rounded-full m3-tonal-high m3-text font-mono text-xs">[AGENTE]</span>`;
+  const saudHtml = `<span style="color: var(--md-tertiary);" class="font-bold">${escapeHtml(state.greeting)}</span>`;
+  return escapeHtml(sc.template)
+    .replace('{SAUDACAO}', saudHtml)
+    .replace('{NOME}', nomeHtml)
+    .replace('{AGENTE}', agenteHtml);
+}
+
+function toIsoDate(d) {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function isOfficialHoliday(iso) {
+  const h = HOLIDAY_MAP[iso];
+  return h && h.scope !== 'facultativo';
+}
+
+function addBusinessDays(dateStr, days, skipHolidays) {
+  const parts = (dateStr || '').split('-').map(Number);
+  if (parts.length !== 3 || parts.some(isNaN)) return null;
+  const d = new Date(parts[0], parts[1] - 1, parts[2]);
+  let added = 0;
+  let skippedNames = [];
+  while (added < days) {
+    d.setDate(d.getDate() + 1);
+    const wd = d.getDay();
+    const iso = toIsoDate(d);
+    if (wd === 0 || wd === 6) continue;
+    if (skipHolidays && isOfficialHoliday(iso)) {
+      skippedNames.push(HOLIDAY_MAP[iso].name);
+      continue;
+    }
+    added++;
+  }
+  return { date: d, skippedNames };
+}
+
+function addCalendarDays(dateStr, days) {
+  const parts = (dateStr || '').split('-').map(Number);
+  if (parts.length !== 3 || parts.some(isNaN)) return null;
+  const d = new Date(parts[0], parts[1] - 1, parts[2]);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+function formatDateBR(d) {
+  if (!d) return '—';
+  const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy} (${weekdays[d.getDay()]})`;
+}
+
+function formatIsoBR(iso) {
+  const parts = (iso || '').split('-').map(Number);
+  if (parts.length !== 3) return iso;
+  return formatDateBR(new Date(parts[0], parts[1] - 1, parts[2]));
+}
+
+function getNextHoliday() {
+  const todayIso = toIsoDate(new Date());
+  const upcoming = HOLIDAYS.filter(h => h.date >= todayIso && h.scope !== 'facultativo');
+  return upcoming[0] || HOLIDAYS[HOLIDAYS.length - 1];
+}
+
+function getScopeMeta(scope) {
+  const map = {
+    nacional: { label: 'Nacional', bg: 'var(--md-primary-container)', text: 'var(--md-on-primary-container)', dot: '#2563eb' },
+    estadual: { label: 'Estadual (GO)', bg: 'var(--md-success-bg)', text: 'var(--md-success-text)', dot: '#16a34a' },
+    municipal: { label: 'Municipal (Goiânia)', bg: 'var(--md-tertiary-container)', text: 'var(--md-on-tertiary-container)', dot: '#d97706' },
+    facultativo: { label: 'Ponto Facultativo', bg: 'var(--md-surface-container-high)', text: 'var(--md-on-surface-variant)', dot: '#64748b' }
+  };
+  return map[scope] || map.nacional;
+}
+
+function getSectionPlainText(sec) {
+  let parts = [sec.num, sec.title, sec.summary];
+  sec.blocks.forEach(b => {
+    if (b.heading) parts.push(b.heading);
+    if (b.intro) parts.push(b.intro);
+    if (b.outro) parts.push(b.outro);
+    if (b.text) parts.push(b.text);
+    if (b.label) parts.push(b.label);
+    if (b.items) parts = parts.concat(b.items);
+    if (b.steps) b.steps.forEach(st => parts.push(st.title, st.desc));
+  });
+  return parts.join(' ').replace(/<[^>]+>/g, '');
+}
+
+// ============================================================
+// SIMPLE HEADS-UP POPUP (KPI quick peek / holiday detail)
+// ============================================================
+function openHeadsup(config) {
+  const modal = document.getElementById('headsupModal');
+  const content = document.getElementById('headsupContent');
+  content.innerHTML = `
+    <div style="background-color: var(--md-surface-container); border-color: var(--md-outline-variant);" class="px-5 py-4 border-b flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <span style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="w-9 h-9 rounded-[14px] flex items-center justify-center shrink-0">
+          <i data-lucide="${config.icon}" class="w-4 h-4"></i>
+        </span>
+        <div class="min-w-0">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider" style="color: var(--md-tertiary);">${config.badge}</div>
+          <h3 class="font-display text-base font-extrabold m3-text truncate">${config.title}</h3>
+        </div>
+      </div>
+      <button type="button" id="closeHeadsupBtn" class="p-1.5 rounded-full m3-card m3-text hover:opacity-80" aria-label="Fechar aviso">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <div class="p-5 space-y-4">
+      <p class="text-sm m3-text leading-relaxed">${config.body}</p>
+      <div class="flex items-center justify-end gap-2">
+        <button type="button" id="dismissHeadsupBtn" class="px-4 py-2 rounded-full m3-tonal m3-text text-xs font-bold hover:opacity-85">Entendi</button>
+        ${config.ctaSection ? `
+          <button type="button" data-headsup-section="${config.ctaSection}" class="m3-btn-primary px-4 py-2 rounded-full text-xs font-bold">${config.ctaLabel}</button>
+        ` : ''}
+        ${config.ctaView ? `
+          <button type="button" data-headsup-view="${config.ctaView}" class="m3-btn-primary px-4 py-2 rounded-full text-xs font-bold">${config.ctaLabel}</button>
+        ` : ''}
+      </div>
+    </div>
+  `;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+}
+
+function closeHeadsup() {
+  const modal = document.getElementById('headsupModal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+}
+
+// ============================================================
+// THEME & SIDEBAR
+// ============================================================
+function applyTheme() {
+  const root = document.documentElement;
+  const moon = document.getElementById('themeIconMoon');
+  const sun = document.getElementById('themeIconSun');
+  if (state.darkMode) {
+    root.classList.add('dark');
+    if (moon) moon.classList.add('hidden');
+    if (sun) sun.classList.remove('hidden');
+  } else {
+    root.classList.remove('dark');
+    if (moon) moon.classList.remove('hidden');
+    if (sun) sun.classList.add('hidden');
+  }
+}
+
+function openMobileSidebar() {
+  document.getElementById('sidebar').classList.remove('-translate-x-full');
+  document.getElementById('sidebarBackdrop').classList.remove('hidden');
+}
+
+function closeMobileSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebarBackdrop').classList.add('hidden');
+}
+
+function updateHeaderTitle() {
+  const titles = {
+    home: ['Painel Rápido', 'A2M Assessoria Jurídica Condominial · Goiânia-GO · Uso interno'],
+    normas: ['Normas & Procedimentos', 'Leitura organizada por seção — sem cansaço visual'],
+    scripts: ['Central de Scripts', 'Personalize seu nome e copie os 7 modelos oficiais em 1 clique'],
+    feriados: ['Feriados em Goiânia-GO', 'Calendário 2026 e 2027 · Nacionais, Estaduais (GO) e Municipais'],
+    prazos: ['Jornada & Calculadora de Prazos', 'Horários do expediente, pausas, meta de CSAT e cálculo de dias úteis']
+  };
+  const [t, s] = titles[state.view] || titles.home;
+  document.getElementById('pageTitle').textContent = t;
+  document.getElementById('pageSubtitle').textContent = s;
+}
+
+function renderSidebar() {
+  document.querySelectorAll('.nav-view-btn').forEach(btn => {
+    const active = btn.dataset.view === state.view;
+    const badge = btn.querySelector('.nav-badge');
+    if (active) {
+      btn.style.backgroundColor = 'var(--md-rail-active-bg)';
+      btn.style.color = 'var(--md-rail-active-text)';
+      btn.classList.add('font-bold');
+      btn.classList.remove('font-medium', 'text-slate-200', 'hover:bg-white/10');
+      if (badge) {
+        badge.style.backgroundColor = 'rgba(0,0,0,0.16)';
+        badge.style.color = 'var(--md-rail-active-text)';
+      }
+    } else {
+      btn.style.backgroundColor = 'transparent';
+      btn.style.color = 'var(--md-rail-text)';
+      btn.classList.remove('font-bold');
+      btn.classList.add('font-medium', 'hover:bg-white/10');
+      if (badge) {
+        badge.style.backgroundColor = 'rgba(255,255,255,0.12)';
+        badge.style.color = '#f0cc7e';
+      }
+    }
+  });
+
+  const readCount = state.readSections.length;
+  const pct = Math.round((readCount / SECTIONS.length) * 100);
+  document.getElementById('sidebarReadCounter').textContent = `${readCount}/${SECTIONS.length} lidas`;
+  document.getElementById('sidebarReadPct').textContent = `${pct}%`;
+  document.getElementById('sidebarReadBar').style.width = `${pct}%`;
+
+  const listEl = document.getElementById('sidebarSectionsList');
+  listEl.innerHTML = SECTIONS.map(sec => {
+    const isActive = state.view === 'normas' && state.activeSectionId === sec.id;
+    const isRead = state.readSections.includes(sec.id);
+    const isPinned = state.pinnedSections.includes(sec.id);
+    return `
+      <button type="button" data-goto-section="${sec.id}" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-full text-left text-xs transition-all ${isActive ? 'bg-white/15 text-white font-bold' : 'text-slate-300 hover:bg-white/10 hover:text-white'}">
+        <span class="font-display font-bold text-[11px] w-5 shrink-0 text-[#f0cc7e]">${sec.num}</span>
+        <span class="truncate flex-1">${sec.shortTitle}</span>
+        ${isPinned ? '<i data-lucide="bookmark" class="w-3 h-3 text-[#f0cc7e] fill-[#f0cc7e] shrink-0"></i>' : ''}
+        ${isRead ? '<i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>' : ''}
+      </button>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// VIEW 1: PAINEL RÁPIDO (Clean, Focused, Zero Clutter)
+// ============================================================
+function renderHomeView() {
+  const activeScenario = QUICK_SCENARIOS.find(q => q.id === state.selectedScenarioId) || QUICK_SCENARIOS[0];
+  const linkedScript = activeScenario.scriptId ? SCRIPTS.find(s => s.id === activeScenario.scriptId) : null;
+  const pinnedList = SECTIONS.filter(s => state.pinnedSections.includes(s.id));
+  const nextHol = getNextHoliday();
+  const nextHolMeta = getScopeMeta(nextHol.scope);
+
+  return `
+    <div class="space-y-6 fade-in">
+      <!-- Material 3 Expressive Hero -->
+      <section class="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#0e223a] via-[#153152] to-[#1e436d] text-white p-6 sm:p-8 shadow-xl border border-white/10">
+        <div class="absolute -right-12 -top-12 w-72 h-72 rounded-full bg-[#f0cc7e]/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute left-1/3 -bottom-16 w-60 h-60 rounded-full bg-sky-400/10 blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div class="max-w-2xl">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#f6dca1] text-xs font-bold mb-3">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+              <span>A2M Assessoria Jurídica Condominial · Equipe de Atendimento</span>
+            </div>
+            <h2 class="font-display text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white">
+              Manual de Atendimento e Conduta
+            </h2>
+            <p class="mt-3 text-sm sm:text-base text-slate-100/90 leading-relaxed">
+              <strong class="text-[#f6dca1]">Princípio central:</strong> nenhum cliente deve ficar sem orientação; nenhuma informação deve ser transmitida sem conferência; nenhuma pendência deve ficar sem registro e responsável.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap lg:flex-col gap-2.5 shrink-0">
+            <button type="button" data-view="scripts" class="m3-btn-primary inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full font-display font-bold text-sm shadow-lg">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+              <span>Abrir Scripts</span>
+            </button>
+            <button type="button" data-view="feriados" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white/15 hover:bg-white/25 text-white font-semibold text-sm border border-white/20 transition-all">
+              <i data-lucide="calendar-heart" class="w-4 h-4 text-[#f6dca1]"></i>
+              <span>Feriados Goiânia</span>
+            </button>
+            <button type="button" data-view="prazos" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-slate-100 font-semibold text-xs border border-white/15 transition-all">
+              <i data-lucide="calculator" class="w-4 h-4 text-[#f6dca1]"></i>
+              <span>Calculadora de Prazos</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6 Core Institutional KPIs (Click opens compact Heads-Up) -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <button type="button" data-kpi-headsup="expediente" class="m3-kpi text-left p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span style="background-color: var(--md-primary-container); color: var(--md-on-primary-container);" class="w-11 h-11 rounded-[16px] flex items-center justify-center">
+              <i data-lucide="alarm-clock" class="w-5 h-5"></i>
+            </span>
+            <span class="text-xs font-bold px-3 py-1 rounded-full m3-tonal m3-muted">Resumo</span>
+          </div>
+          <div class="font-display text-xl font-extrabold m3-text">08h–18h <span class="text-sm font-semibold m3-muted">· Sex 17h</span></div>
+          <div class="text-xs m3-muted mt-1">Login às 08h · Sem atendimentos fora do expediente</div>
+        </button>
+
+        <button type="button" data-kpi-headsup="pausas" class="m3-kpi text-left p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span style="background-color: var(--md-secondary-container); color: var(--md-on-secondary-container);" class="w-11 h-11 rounded-[16px] flex items-center justify-center">
+              <i data-lucide="coffee" class="w-5 h-5"></i>
+            </span>
+            <span class="text-xs font-bold px-3 py-1 rounded-full m3-tonal m3-muted">Resumo</span>
+          </div>
+          <div class="font-display text-xl font-extrabold m3-text">1h almoço <span class="text-sm font-semibold m3-muted">· 2×15min</span></div>
+          <div class="text-xs m3-muted mt-1">Almoço obrigatório + lanche manhã e tarde</div>
+        </button>
+
+        <button type="button" data-kpi-headsup="csat" class="m3-kpi text-left p-5" style="border-color: var(--md-tertiary);">
+          <div class="flex items-center justify-between mb-3">
+            <span style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="w-11 h-11 rounded-[16px] flex items-center justify-center">
+              <i data-lucide="award" class="w-5 h-5"></i>
+            </span>
+            <span style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="text-xs font-bold px-3 py-1 rounded-full">Meta Oficial</span>
+          </div>
+          <div class="font-display text-2xl font-extrabold m3-text">84,5% CSAT</div>
+          <div class="text-xs m3-muted mt-1">Meta mensal geral de satisfação da equipe</div>
+        </button>
+
+        <button type="button" data-kpi-headsup="acionamentos" class="m3-kpi text-left p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="w-11 h-11 rounded-[16px] flex items-center justify-center">
+              <i data-lucide="calendar-days" class="w-5 h-5"></i>
+            </span>
+            <span class="text-xs font-bold px-3 py-1 rounded-full m3-tonal m3-muted">Resumo</span>
+          </div>
+          <div class="font-display text-xl font-extrabold m3-text">3 dias úteis</div>
+          <div class="text-xs m3-muted mt-1">Validade dos acionamentos (E-mail, SMS, Lig., ASC)</div>
+        </button>
+
+        <button type="button" data-kpi-headsup="acordos" class="m3-kpi text-left p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span style="background-color: var(--md-success-bg); color: var(--md-success-text);" class="w-11 h-11 rounded-[16px] flex items-center justify-center">
+              <i data-lucide="handshake" class="w-5 h-5"></i>
+            </span>
+            <span class="text-xs font-bold px-3 py-1 rounded-full m3-tonal m3-muted">Resumo</span>
+          </div>
+          <div class="font-display text-xl font-extrabold m3-text">10 dias corridos</div>
+          <div class="text-xs m3-muted mt-1">Prazo padrão de vencimento do acordo</div>
+        </button>
+
+        <button type="button" data-holiday-headsup="${nextHol.date}" class="m3-kpi text-left p-5">
+          <div class="flex items-center justify-between mb-3">
+            <span style="background-color: var(--md-primary-container); color: var(--md-on-primary-container);" class="w-11 h-11 rounded-[16px] flex items-center justify-center">
+              <i data-lucide="calendar-heart" class="w-5 h-5"></i>
+            </span>
+            <span style="background-color: ${nextHolMeta.bg}; color: ${nextHolMeta.text};" class="text-[11px] font-bold px-3 py-1 rounded-full">${nextHolMeta.label}</span>
+          </div>
+          <div class="font-display text-lg font-extrabold m3-text truncate">${formatIsoBR(nextHol.date)}</div>
+          <div class="text-xs m3-muted mt-1 truncate">Próximo feriado: ${nextHol.name}</div>
+        </button>
+      </section>
+
+      <!-- Interactive Decision Guide ("O que fazer agora?") -->
+      <section class="m3-card rounded-[28px] overflow-hidden">
+        <div style="border-color: var(--md-outline-variant);" class="px-6 py-4 border-b flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="font-display text-base sm:text-lg font-extrabold m3-text flex items-center gap-2">
+              <i data-lucide="zap" class="w-5 h-5" style="color: var(--md-tertiary);"></i>
+              <span>Guia Rápido: "O que fazer agora?"</span>
+            </h3>
+            <p class="text-xs m3-muted mt-0.5">Toque em uma situação do atendimento para ver a conduta oficial sem sair do painel.</p>
+          </div>
+        </div>
+
+        <div class="p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            ${QUICK_SCENARIOS.map(q => {
+              const active = q.id === activeScenario.id;
+              return `
+                <button type="button" data-select-scenario="${q.id}"
+                  style="${active
+                    ? 'background-color: var(--md-primary); color: var(--md-on-primary); border-color: var(--md-primary);'
+                    : 'background-color: var(--md-surface-container); color: var(--md-on-surface); border-color: transparent;'}"
+                  class="flex items-center gap-3 px-4 py-3 rounded-[20px] text-left border transition-all hover:opacity-95">
+                  <i data-lucide="${q.icon}" class="w-4 h-4 shrink-0" style="${active ? '' : 'color: var(--md-tertiary);'}"></i>
+                  <span class="text-xs sm:text-sm font-semibold truncate">${q.title}</span>
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+          <div style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="lg:col-span-5 rounded-[24px] p-5 sm:p-6 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span style="background-color: var(--md-primary); color: var(--md-on-primary);" class="px-3 py-1 rounded-full text-[11px] font-bold">${activeScenario.badge}</span>
+                <button type="button" data-goto-section="${activeScenario.sectionId}" class="text-xs font-bold underline underline-offset-4 hover:opacity-80 flex items-center gap-1">
+                  <span>Ver regra completa</span>
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <h4 class="font-display text-lg font-extrabold mb-2">${activeScenario.title}</h4>
+              <p class="text-sm leading-relaxed opacity-95">${activeScenario.answer}</p>
+            </div>
+
+            ${linkedScript ? `
+              <div class="mt-5 pt-4 border-t border-black/15 dark:border-white/15">
+                <div class="flex items-center justify-between gap-2 mb-2">
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider">Script recomendado (${linkedScript.code})</span>
+                  <button type="button" data-copy-script="${linkedScript.id}" style="background-color: var(--md-primary); color: var(--md-on-primary);" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold hover:opacity-90">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                    <span>Copiar</span>
+                  </button>
+                </div>
+                <p class="text-xs italic leading-relaxed opacity-90">"${escapeHtml(linkedScript.raw)}"</p>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </section>
+
+      ${pinnedList.length > 0 ? `
+        <section>
+          <h3 class="font-display text-sm font-extrabold m3-text flex items-center gap-2 mb-3">
+            <i data-lucide="bookmark" class="w-4 h-4" style="color: var(--md-tertiary);"></i>
+            <span>Suas Normas Fixadas</span>
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            ${pinnedList.map(sec => `
+              <button type="button" data-goto-section="${sec.id}" class="m3-kpi text-left p-4">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-xs font-extrabold" style="color: var(--md-tertiary);">Seção ${sec.num}</span>
+                  <i data-lucide="${sec.icon}" class="w-4 h-4 m3-muted"></i>
+                </div>
+                <div class="font-display text-sm font-bold m3-text">${sec.title}</div>
+                <p class="text-xs m3-muted mt-1 line-clamp-2">${sec.summary}</p>
+              </button>
+            `).join('')}
+          </div>
+        </section>
+      ` : ''}
+    </div>
+  `;
+}
+
+// ============================================================
+// SECTION BODY BLOCKS
+// ============================================================
+function renderSectionBodyBlocks(sec) {
+  return sec.blocks.map(b => {
+    if (b.type === 'list') {
+      return `
+        <ul class="space-y-3">
+          ${b.items.map(item => `
+            <li class="flex items-start gap-3 text-sm sm:text-[15px] m3-text leading-relaxed">
+              <span class="w-2 h-2 rounded-full mt-2 shrink-0" style="background-color: var(--md-tertiary);"></span>
+              <span>${item}</span>
+            </li>
+          `).join('')}
+        </ul>
+      `;
+    }
+    if (b.type === 'subsection') {
+      return `
+        <div class="p-4 sm:p-5 rounded-[22px] m3-tonal border m3-border">
+          <h4 class="font-display text-sm sm:text-base font-extrabold mb-2.5" style="color: var(--md-primary);">${b.heading}</h4>
+          ${b.intro ? `<p class="text-sm m3-text mb-2.5 leading-relaxed">${b.intro}</p>` : ''}
+          <ul class="space-y-2">
+            ${b.items.map(item => `
+              <li class="flex items-start gap-2.5 text-sm m3-text leading-relaxed">
+                <i data-lucide="chevron-right" class="w-4 h-4 mt-0.5 shrink-0" style="color: var(--md-tertiary);"></i>
+                <span>${item}</span>
+              </li>
+            `).join('')}
+          </ul>
+          ${b.outro ? `<p class="text-sm m3-text mt-3 pt-3 border-t m3-border leading-relaxed">${b.outro}</p>` : ''}
+        </div>
+      `;
+    }
+    if (b.type === 'steps') {
+      return `
+        <div>
+          <h4 class="font-display text-sm sm:text-base font-extrabold mb-3" style="color: var(--md-primary);">${b.heading}</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            ${b.steps.map((st, idx) => `
+              <div class="p-4 rounded-[22px] m3-tonal border m3-border">
+                <div class="flex items-center gap-2.5 mb-2">
+                  <span style="background-color: var(--md-primary); color: var(--md-on-primary);" class="w-7 h-7 rounded-full text-xs font-extrabold flex items-center justify-center">${idx + 1}</span>
+                  <span class="font-display text-sm font-bold m3-text">${st.title}</span>
+                </div>
+                <p class="text-xs sm:text-sm m3-muted leading-relaxed">${st.desc}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+    if (b.type === 'text') {
+      return `
+        <div class="p-4 sm:p-5 rounded-[22px] m3-tonal border m3-border">
+          <h4 class="font-display text-sm sm:text-base font-extrabold mb-1.5" style="color: var(--md-primary);">${b.heading}</h4>
+          <p class="text-sm m3-text leading-relaxed">${b.text}</p>
+        </div>
+      `;
+    }
+    if (b.type === 'callout') {
+      const isWarn = b.tone === 'warning';
+      const bg = isWarn ? 'var(--md-warning-bg)' : 'var(--md-tertiary-container)';
+      const fg = isWarn ? 'var(--md-warning-text)' : 'var(--md-on-tertiary-container)';
+      return `
+        <div style="background-color: ${bg}; color: ${fg};" class="p-4 sm:p-5 rounded-[22px] flex items-start gap-3">
+          <i data-lucide="${isWarn ? 'alert-triangle' : 'info'}" class="w-5 h-5 shrink-0 mt-0.5"></i>
+          <div class="text-sm leading-relaxed">
+            <strong class="font-display block mb-0.5">${b.label}</strong>
+            <span>${b.text}</span>
+          </div>
+        </div>
+      `;
+    }
+    if (b.type === 'scripts_embed') {
+      return `
+        <div class="space-y-3">
+          <div style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="flex flex-wrap items-center justify-between gap-2 p-4 rounded-[20px]">
+            <p class="text-xs sm:text-sm font-medium">Quer personalizar <strong>[NOME]</strong> e <strong>[AGENTE]</strong> automaticamente?</p>
+            <button type="button" data-view="scripts" style="background-color: var(--md-primary); color: var(--md-on-primary);" class="px-4 py-2 rounded-full text-xs font-bold">Abrir Central de Scripts →</button>
+          </div>
+          ${SCRIPTS.map(sc => `
+            <div class="p-4 rounded-[20px] m3-tonal border m3-border">
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="font-display text-xs sm:text-sm font-bold m3-text">${sc.code}. ${sc.title}</span>
+                <button type="button" data-copy-script="${sc.id}" class="m3-btn-tonal inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  <span>Copiar</span>
+                </button>
+              </div>
+              <p class="text-sm m3-muted leading-relaxed">${escapeHtml(getResolvedScript(sc))}</p>
+            </div>
+          `).join('')}
+          <p class="text-xs m3-muted italic">Os scripts são modelos de referência e devem ser adaptados ao contexto, sem alterar o sentido das orientações ou incluir informações não confirmadas.</p>
+        </div>
+      `;
+    }
+    return '';
+  }).join('');
+}
+
+// ============================================================
+// VIEW 2: NORMAS & REGRAS (Normal Page)
+// ============================================================
+function renderNormasView() {
+  const filtered = state.normasCategory === 'all'
+    ? SECTIONS
+    : SECTIONS.filter(s => s.categories.includes(state.normasCategory));
+
+  let activeSec = filtered.find(s => s.id === state.activeSectionId) || filtered[0] || SECTIONS[0];
+  if (activeSec) state.activeSectionId = activeSec.id;
+
+  const currentIndex = filtered.findIndex(s => s.id === activeSec.id);
+  const prevSec = currentIndex > 0 ? filtered[currentIndex - 1] : null;
+  const nextSec = currentIndex < filtered.length - 1 ? filtered[currentIndex + 1] : null;
+  const isRead = state.readSections.includes(activeSec.id);
+  const isPinned = state.pinnedSections.includes(activeSec.id);
+
+  return `
+    <div class="space-y-5 fade-in">
+      <!-- Category & Mode Bar -->
+      <div class="m3-card rounded-[24px] p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-1.5 flex-wrap">
+          ${CATEGORIES.map(cat => {
+            const active = state.normasCategory === cat.id;
+            return `
+              <button type="button" data-normas-cat="${cat.id}"
+                style="${active ? 'background-color: var(--md-primary); color: var(--md-on-primary);' : 'background-color: var(--md-surface-container); color: var(--md-on-surface);'}"
+                class="px-3.5 py-2 rounded-full text-xs font-bold transition-all">
+                ${cat.label}
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        <div class="inline-flex rounded-full m3-tonal p-1 shrink-0 self-start sm:self-auto">
+          <button type="button" data-normas-mode="focus"
+            style="${state.normasViewMode === 'focus' ? 'background-color: var(--md-surface-container-low); color: var(--md-on-surface);' : 'color: var(--md-on-surface-variant);'}"
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all">Modo Foco</button>
+          <button type="button" data-normas-mode="all"
+            style="${state.normasViewMode === 'all' ? 'background-color: var(--md-surface-container-low); color: var(--md-on-surface);' : 'color: var(--md-on-surface-variant);'}"
+            class="px-3.5 py-1.5 rounded-full text-xs font-bold transition-all">Lista Completa (${filtered.length})</button>
+        </div>
+      </div>
+
+      ${state.normasViewMode === 'focus' ? `
+        <!-- Section Pills -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1">
+          ${filtered.map(sec => {
+            const active = sec.id === activeSec.id;
+            const secRead = state.readSections.includes(sec.id);
+            return `
+              <button type="button" data-goto-section="${sec.id}"
+                style="${active
+                  ? 'background-color: var(--md-primary); color: var(--md-on-primary); border-color: var(--md-primary);'
+                  : 'background-color: var(--md-surface-container-low); color: var(--md-on-surface); border-color: var(--md-outline-variant);'}"
+                class="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border transition-all">
+                <span style="${active ? '' : 'color: var(--md-tertiary);'}">${sec.num}</span>
+                <span>${sec.shortTitle}</span>
+                ${secRead ? '<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>' : ''}
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        <!-- Focused Section Card -->
+        <article class="m3-card rounded-[28px] overflow-hidden">
+          <div style="border-color: var(--md-outline-variant);" class="p-5 sm:p-6 border-b flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div style="background-color: var(--md-primary-container); color: var(--md-on-primary-container);" class="w-12 h-12 rounded-[18px] flex items-center justify-center shrink-0">
+                <i data-lucide="${activeSec.icon}" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <div class="text-xs font-extrabold uppercase tracking-wider" style="color: var(--md-tertiary);">Seção ${activeSec.num}</div>
+                <h2 class="font-display text-xl sm:text-2xl font-extrabold m3-text mt-0.5">${activeSec.title}</h2>
+                <p class="text-xs sm:text-sm m3-muted mt-1">${activeSec.summary}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 shrink-0">
+              <button type="button" data-toggle-pin="${activeSec.id}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border m3-border transition-all"
+                style="${isPinned ? 'background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);' : 'background-color: var(--md-surface-container); color: var(--md-on-surface);'}">
+                <i data-lucide="bookmark" class="w-3.5 h-3.5 ${isPinned ? 'fill-current' : ''}"></i>
+                <span>${isPinned ? 'Fixada' : 'Fixar'}</span>
+              </button>
+              <button type="button" data-toggle-read="${activeSec.id}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border m3-border transition-all"
+                style="${isRead ? 'background-color: var(--md-success-bg); color: var(--md-success-text);' : 'background-color: var(--md-surface-container); color: var(--md-on-surface);'}">
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                <span>${isRead ? 'Lida' : 'Marcar como lida'}</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-5 sm:p-6 space-y-4">
+            ${renderSectionBodyBlocks(activeSec)}
+          </div>
+
+          <div style="background-color: var(--md-surface-container); border-color: var(--md-outline-variant);" class="px-5 sm:px-6 py-4 border-t flex items-center justify-between gap-3">
+            ${prevSec ? `
+              <button type="button" data-goto-section="${prevSec.id}" class="inline-flex items-center gap-2 px-4 py-2 rounded-full m3-card m3-text text-xs sm:text-sm font-bold hover:opacity-85">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">${prevSec.num}. ${prevSec.shortTitle}</span>
+                <span class="sm:hidden">Anterior</span>
+              </button>
+            ` : '<div></div>'}
+
+            ${nextSec ? `
+              <button type="button" data-goto-section="${nextSec.id}" class="m3-btn-tonal inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-bold">
+                <span class="hidden sm:inline">${nextSec.num}. ${nextSec.shortTitle}</span>
+                <span class="sm:hidden">Próxima</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            ` : `
+              <button type="button" data-view="scripts" class="m3-btn-primary inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs sm:text-sm font-bold">
+                <span>Ir para Central de Scripts</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            `}
+          </div>
+        </article>
+      ` : `
+        <div class="space-y-4">
+          ${filtered.map(sec => {
+            const secRead = state.readSections.includes(sec.id);
+            return `
+              <article class="m3-card rounded-[26px] overflow-hidden">
+                <div style="border-color: var(--md-outline-variant);" class="px-5 py-4 border-b flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-3">
+                    <span style="background-color: var(--md-primary); color: var(--md-on-primary);" class="px-3 py-1 rounded-full text-xs font-extrabold">${sec.num}</span>
+                    <h3 class="font-display text-base sm:text-lg font-extrabold m3-text">${sec.title}</h3>
+                  </div>
+                  <button type="button" data-toggle-read="${sec.id}" class="text-xs font-bold px-3.5 py-1.5 rounded-full border m3-border"
+                    style="${secRead ? 'background-color: var(--md-success-bg); color: var(--md-success-text);' : 'background-color: var(--md-surface-container); color: var(--md-on-surface);'}">
+                    ${secRead ? '✓ Lida' : 'Marcar lida'}
+                  </button>
+                </div>
+                <div class="p-5 space-y-4">
+                  ${renderSectionBodyBlocks(sec)}
+                </div>
+              </article>
+            `;
+          }).join('')}
+        </div>
+      `}
+    </div>
+  `;
+}
+
+// ============================================================
+// VIEW 3: CENTRAL DE SCRIPTS (Normal Page)
+// ============================================================
+function renderScriptsView() {
+  const tags = ['all', 'Início', 'Cobrança', 'Financeiro', 'Encerramento', 'Fora de escopo', 'Pendência'];
+  const filteredScripts = state.scriptTagFilter === 'all'
+    ? SCRIPTS
+    : SCRIPTS.filter(s => s.tag === state.scriptTagFilter);
+
+  return `
+    <div class="space-y-5 fade-in">
+      <!-- Personalizer -->
+      <section class="m3-card rounded-[28px] p-5 sm:p-6 space-y-4">
+        <div>
+          <h2 class="font-display text-base sm:text-lg font-extrabold m3-text flex items-center gap-2">
+            <i data-lucide="wand-2" class="w-5 h-5" style="color: var(--md-tertiary);"></i>
+            <span>Personalizador Rápido de Abertura (Script 10.1)</span>
+          </h2>
+          <p class="text-xs m3-muted mt-0.5">Preencha seu nome uma vez (salvo automaticamente) e o nome do cliente para copiar pronto para o WhatsApp.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label for="agentNameInput" class="block text-[11px] font-extrabold uppercase tracking-wider m3-muted mb-1.5">Seu nome ([AGENTE])</label>
+            <input id="agentNameInput" type="text" value="${escapeHtml(state.agentName)}" placeholder="Ex.: Douglas" class="w-full px-4 py-2.5 rounded-2xl m3-tonal m3-text text-sm border m3-border focus:outline-none">
+          </div>
+          <div>
+            <label for="clientNameInput" class="block text-[11px] font-extrabold uppercase tracking-wider m3-muted mb-1.5">Cliente ([NOME])</label>
+            <input id="clientNameInput" type="text" value="${escapeHtml(state.clientName)}" placeholder="Ex.: Maria Silva" class="w-full px-4 py-2.5 rounded-2xl m3-tonal m3-text text-sm border m3-border focus:outline-none">
+          </div>
+          <div>
+            <span class="block text-[11px] font-extrabold uppercase tracking-wider m3-muted mb-1.5">Saudação</span>
+            <div class="grid grid-cols-3 gap-1.5">
+              ${['Bom dia', 'Boa tarde', 'Boa noite'].map(g => `
+                <button type="button" data-greeting="${g}"
+                  style="${state.greeting === g ? 'background-color: var(--md-primary); color: var(--md-on-primary);' : 'background-color: var(--md-surface-container); color: var(--md-on-surface);'}"
+                  class="py-2.5 px-2 rounded-full text-xs font-bold transition-all">${g}</button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tag Filter Pills -->
+      <div class="flex items-center gap-2 flex-wrap">
+        ${tags.map(tag => {
+          const active = state.scriptTagFilter === tag;
+          return `
+            <button type="button" data-script-tag="${tag}"
+              style="${active ? 'background-color: var(--md-primary); color: var(--md-on-primary);' : 'background-color: var(--md-surface-container-low); color: var(--md-on-surface); border-color: var(--md-outline-variant);'}"
+              class="px-4 py-2 rounded-full text-xs font-bold border transition-all">
+              ${tag === 'all' ? 'Todos (7)' : tag}
+            </button>
+          `;
+        }).join('')}
+      </div>
+
+      <!-- Scripts Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        ${filteredScripts.map(sc => `
+          <div class="m3-card rounded-[26px] p-5 flex flex-col justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <div class="flex items-center gap-2">
+                  <span style="background-color: var(--md-primary-container); color: var(--md-on-primary-container);" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold">${sc.code}</span>
+                  <span style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold">${sc.tag}</span>
+                </div>
+                <button type="button" data-copy-script="${sc.id}" class="m3-btn-primary inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  <span>Copiar texto</span>
+                </button>
+              </div>
+              <h3 class="font-display text-sm sm:text-base font-extrabold m3-text mb-2">${sc.title}</h3>
+              <div id="scriptPreview_${sc.id}" class="p-4 rounded-[20px] m3-tonal text-sm m3-text leading-relaxed">
+                ${getResolvedScriptHtml(sc)}
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="p-4 rounded-[22px] text-xs sm:text-sm flex items-start gap-3">
+        <i data-lucide="info" class="w-4 h-4 mt-0.5 shrink-0"></i>
+        <span><strong>Orientação institucional:</strong> os scripts são modelos de referência e devem ser adaptados ao contexto, sem alterar o sentido das orientações ou incluir informações não confirmadas.</span>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// VIEW 4: FERIADOS GOIÂNIA-GO (Normal Page + Simple Heads-up)
+// ============================================================
+function renderFeriadosView() {
+  const yearHolidays = HOLIDAYS.filter(h => h.date.startsWith(String(state.calYear)));
+  const filteredYearHolidays = state.calScopeFilter === 'all'
+    ? yearHolidays
+    : yearHolidays.filter(h => h.scope === state.calScopeFilter);
+
+  const firstDay = new Date(state.calYear, state.calMonth, 1);
+  const daysInMonth = new Date(state.calYear, state.calMonth + 1, 0).getDate();
+  const startWeekday = firstDay.getDay();
+  const todayIso = toIsoDate(new Date());
+
+  let cellsHtml = '';
+  for (let i = 0; i < startWeekday; i++) {
+    cellsHtml += `<div class="h-12 sm:h-14"></div>`;
+  }
+  for (let day = 1; day <= daysInMonth; day++) {
+    const iso = `${state.calYear}-${String(state.calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const hol = HOLIDAY_MAP[iso];
+    const matchesFilter = hol && (state.calScopeFilter === 'all' || hol.scope === state.calScopeFilter);
+    const isToday = iso === todayIso;
+    const isSelected = state.selectedHolidayDate === iso;
+    const meta = matchesFilter ? getScopeMeta(hol.scope) : null;
+
+    cellsHtml += `
+      <button type="button" data-cal-day="${iso}"
+        style="${matchesFilter
+          ? `background-color: ${meta.bg}; color: ${meta.text};`
+          : 'background-color: var(--md-surface-container-low); color: var(--md-on-surface);'} ${isSelected ? 'outline: 2px solid var(--md-tertiary); outline-offset: 1px;' : ''}"
+        class="relative h-12 sm:h-14 rounded-2xl flex flex-col items-center justify-center text-xs sm:text-sm font-bold border ${isToday ? 'border-2' : ''} m3-border transition-transform hover:scale-105">
+        <span>${day}</span>
+        ${matchesFilter ? `<span class="w-1.5 h-1.5 rounded-full mt-0.5" style="background-color: ${meta.dot};"></span>` : ''}
+      </button>
+    `;
+  }
+
+  return `
+    <div class="space-y-5 fade-in">
+      <!-- Year & Scope Controls -->
+      <div class="m3-card rounded-[24px] p-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="inline-flex p-1 rounded-full m3-tonal border m3-border">
+          ${[2026, 2027].map(y => `
+            <button type="button" data-cal-year="${y}"
+              style="${state.calYear === y ? 'background-color: var(--md-primary); color: var(--md-on-primary);' : 'color: var(--md-on-surface);'}"
+              class="px-5 py-1.5 rounded-full text-xs font-extrabold transition-all">${y}</button>
+          `).join('')}
+        </div>
+
+        <div class="flex items-center gap-1.5 flex-wrap">
+          ${[
+            ['all', 'Todos'],
+            ['nacional', 'Nacional'],
+            ['estadual', 'Estadual (GO)'],
+            ['municipal', 'Municipal (Goiânia)'],
+            ['facultativo', 'Ponto Facultativo']
+          ].map(([id, lbl]) => {
+            const active = state.calScopeFilter === id;
+            return `
+              <button type="button" data-cal-scope="${id}"
+                style="${active ? 'background-color: var(--md-primary); color: var(--md-on-primary);' : 'background-color: var(--md-surface-container); color: var(--md-on-surface);'}"
+                class="px-3.5 py-2 rounded-full text-xs font-bold transition-all">${lbl}</button>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- Monthly Calendar Card -->
+        <div class="lg:col-span-7 m3-card rounded-[28px] p-5 sm:p-6">
+          <div class="flex items-center justify-between mb-5">
+            <button type="button" id="prevMonthBtn" class="p-2.5 rounded-full m3-tonal m3-text hover:opacity-80" aria-label="Mês anterior">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            </button>
+            <div class="font-display text-lg font-extrabold m3-text">${MONTH_NAMES[state.calMonth]} de ${state.calYear}</div>
+            <button type="button" id="nextMonthBtn" class="p-2.5 rounded-full m3-tonal m3-text hover:opacity-80" aria-label="Próximo mês">
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold m3-muted mb-2">
+            <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+          </div>
+          <div class="grid grid-cols-7 gap-2">${cellsHtml}</div>
+          <p class="text-xs m3-muted text-center mt-4">Toque em qualquer data colorida para ver os detalhes do feriado em um aviso rápido.</p>
+        </div>
+
+        <!-- Annual List Card -->
+        <div class="lg:col-span-5 m3-card rounded-[28px] flex flex-col max-h-[520px] overflow-hidden">
+          <div style="border-color: var(--md-outline-variant);" class="px-5 py-4 border-b flex items-center justify-between">
+            <span class="font-display text-base font-extrabold m3-text">Feriados em ${state.calYear}</span>
+            <span class="px-3 py-1 rounded-full m3-tonal text-xs font-bold m3-muted">${filteredYearHolidays.length} datas</span>
+          </div>
+          <div class="overflow-y-auto p-3.5 space-y-2.5 flex-1">
+            ${filteredYearHolidays.map(h => {
+              const meta = getScopeMeta(h.scope);
+              const mIdx = Number(h.date.split('-')[1]) - 1;
+              return `
+                <button type="button" data-jump-holiday="${h.date}" data-jump-month="${mIdx}" class="w-full text-left p-3.5 rounded-[20px] m3-tonal hover:opacity-90 border m3-border transition-all">
+                  <div class="flex items-center justify-between gap-2 mb-1">
+                    <span class="text-xs font-extrabold m3-text">${formatIsoBR(h.date)}</span>
+                    <span style="background-color: ${meta.bg}; color: ${meta.text};" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold">${meta.label}</span>
+                  </div>
+                  <div class="font-display text-xs sm:text-sm font-bold m3-text">${h.name}</div>
+                  <div class="text-[11px] m3-muted mt-0.5">${h.law}</div>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// VIEW 5: JORNADA & PRAZOS (Normal Page)
+// ============================================================
+function renderPrazosView() {
+  const bizRes = addBusinessDays(state.calcDate, 3, state.skipHolidaysInCalc);
+  const calDate = addCalendarDays(state.calcDate, 10);
+
+  return `
+    <div class="space-y-6 fade-in">
+      <!-- Jornada, Pausas, Liderança & CSAT Cards -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div style="background-color: var(--md-primary-container); color: var(--md-on-primary-container);" class="p-5 rounded-[24px]">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider opacity-80">Expediente</div>
+          <div class="font-display text-base font-extrabold mt-1.5">Seg–Qui: 08h às 18h</div>
+          <div class="text-xs font-bold mt-0.5">Sexta: 08h às 17h</div>
+          <div class="text-[11px] mt-2 font-medium opacity-90">Sem atendimento fora do horário</div>
+        </div>
+        <div class="p-5 rounded-[24px] m3-card">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider m3-muted">Intervalos & Pausas</div>
+          <div class="font-display text-base font-extrabold m3-text mt-1.5">Almoço: 1 hora</div>
+          <div class="text-xs m3-muted mt-0.5">Lanche: 15 min (manhã) + 15 min (tarde)</div>
+        </div>
+        <div style="background-color: var(--md-warning-bg); color: var(--md-warning-text);" class="p-5 rounded-[24px]">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider opacity-85">Comunicação à Liderança</div>
+          <div class="font-display text-base font-extrabold mt-1.5">Avisar sempre</div>
+          <div class="text-xs opacity-90 mt-0.5">Ausências, atrasos longos e demandas internas</div>
+        </div>
+        <div style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="p-5 rounded-[24px]">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider opacity-85">Meta Mensal CSAT</div>
+          <div class="font-display text-3xl font-extrabold mt-1">84,5%</div>
+          <div class="text-xs opacity-90">Resultado geral da equipe</div>
+        </div>
+      </section>
+
+      <!-- Deadline Calculator -->
+      <section class="m3-card rounded-[28px] p-5 sm:p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="font-display text-lg font-extrabold m3-text flex items-center gap-2">
+              <i data-lucide="calculator" class="w-5 h-5" style="color: var(--md-tertiary);"></i>
+              <span>Calculadora Rápida de Prazos do Manual</span>
+            </h2>
+            <p class="text-xs m3-muted mt-0.5">Simule a validade de acionamento (3 dias úteis) e o vencimento padrão do acordo (10 dias corridos).</p>
+          </div>
+          <label class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full m3-tonal text-xs font-bold m3-text cursor-pointer border m3-border">
+            <input type="checkbox" id="skipHolidaysToggle" ${state.skipHolidaysInCalc ? 'checked' : ''} class="w-4 h-4 accent-[#b99655] cursor-pointer">
+            <span>Descontar feriados de Goiânia-GO</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-5 rounded-[22px] m3-tonal border m3-border flex flex-col justify-center">
+            <label for="calcDateInput" class="text-[11px] font-extrabold uppercase tracking-wider m3-muted mb-2">Data Base</label>
+            <input id="calcDateInput" type="date" value="${state.calcDate}" class="w-full px-4 py-3 rounded-2xl m3-card m3-text text-sm font-bold focus:outline-none">
+          </div>
+
+          <div style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="p-5 rounded-[22px] flex flex-col justify-between">
+            <div class="text-[11px] font-extrabold uppercase tracking-wider opacity-85">Validade do Acionamento (Seção 5.1)</div>
+            <div class="font-display text-2xl font-extrabold my-2">${bizRes ? formatDateBR(bizRes.date) : '—'}</div>
+            <div class="text-xs opacity-90">
+              +3 dias úteis.${bizRes && bizRes.skippedNames.length ? ` Pulou feriado: ${bizRes.skippedNames.join(', ')}.` : ''}
+            </div>
+          </div>
+
+          <div style="background-color: var(--md-success-bg); color: var(--md-success-text);" class="p-5 rounded-[22px] flex flex-col justify-between">
+            <div class="text-[11px] font-extrabold uppercase tracking-wider opacity-85">Prazo Padrão de Acordo (Seção 6.1)</div>
+            <div class="font-display text-2xl font-extrabold my-2">${formatDateBR(calDate)}</div>
+            <div class="text-xs opacity-90">+10 dias corridos a partir da geração do acordo.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+// ============================================================
+// GLOBAL SEARCH MODAL
+// ============================================================
+function openSearchModal() {
+  const modal = document.getElementById('searchModal');
+  const input = document.getElementById('globalSearchInput');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  renderSearchResults(input.value);
+  setTimeout(() => input.focus(), 30);
+}
+
+function closeSearchModal() {
+  const modal = document.getElementById('searchModal');
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+}
+
+function renderSearchResults(rawQuery) {
+  const q = (rawQuery || '').trim();
+  const qNorm = normalizeText(q);
+  const clearBtn = document.getElementById('clearGlobalSearchBtn');
+  const container = document.getElementById('globalSearchResults');
+
+  if (q.length > 0) clearBtn.classList.remove('hidden');
+  else clearBtn.classList.add('hidden');
+
+  if (!qNorm) {
+    container.innerHTML = `
+      <div class="p-5 text-center text-xs sm:text-sm m3-muted">
+        Pesquise em todas as <strong class="m3-text">11 seções</strong>, <strong class="m3-text">7 scripts</strong> e <strong class="m3-text">feriados de Goiânia-GO</strong>.
+      </div>
+    `;
+    return;
+  }
+
+  const matchedSections = SECTIONS.filter(sec => normalizeText(getSectionPlainText(sec)).includes(qNorm));
+  const matchedScripts = SCRIPTS.filter(sc => normalizeText(sc.title + ' ' + sc.raw + ' ' + sc.tag).includes(qNorm));
+  const matchedHolidays = HOLIDAYS.filter(h => normalizeText(h.name + ' ' + h.scope + ' ' + h.date + ' feriado').includes(qNorm)).slice(0, 6);
+
+  if (!matchedSections.length && !matchedScripts.length && !matchedHolidays.length) {
+    container.innerHTML = `
+      <div class="p-8 text-center">
+        <div class="font-display text-sm font-bold m3-text mb-1">Nenhum resultado para "${escapeHtml(q)}"</div>
+        <p class="text-xs m3-muted">Tente termos como "expediente", "CSAT", "acordo", "boleto", "Cobmais" ou "feriado".</p>
+      </div>
+    `;
+    return;
+  }
+
+  let html = '';
+
+  if (matchedScripts.length) {
+    html += `<div class="px-2 pt-1 text-[10px] font-extrabold uppercase tracking-wider m3-muted">Scripts (${matchedScripts.length})</div>`;
+    html += matchedScripts.map(sc => `
+      <div class="p-3.5 rounded-2xl m3-tonal border m3-border flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <div class="font-display text-xs sm:text-sm font-bold m3-text">${sc.code}. ${highlightText(sc.title, q)}</div>
+          <p class="text-xs m3-muted mt-1">${highlightText(getResolvedScript(sc), q)}</p>
+        </div>
+        <button type="button" data-copy-script="${sc.id}" class="m3-btn-primary shrink-0 px-3 py-1.5 rounded-full text-xs font-bold">Copiar</button>
+      </div>
+    `).join('');
+  }
+
+  if (matchedHolidays.length) {
+    html += `<div class="px-2 pt-2 text-[10px] font-extrabold uppercase tracking-wider m3-muted">Feriados em Goiânia-GO (${matchedHolidays.length})</div>`;
+    html += matchedHolidays.map(h => {
+      const meta = getScopeMeta(h.scope);
+      return `
+        <button type="button" data-search-holiday="${h.date}" class="w-full text-left p-3 rounded-2xl m3-tonal hover:opacity-90 border m3-border flex items-center justify-between gap-3">
+          <div>
+            <div class="font-display text-xs sm:text-sm font-bold m3-text">${highlightText(h.name, q)}</div>
+            <div class="text-xs m3-muted">${formatIsoBR(h.date)} · ${h.law}</div>
+          </div>
+          <span style="background-color: ${meta.bg}; color: ${meta.text};" class="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold">${meta.label}</span>
+        </button>
+      `;
+    }).join('');
+  }
+
+  if (matchedSections.length) {
+    html += `<div class="px-2 pt-2 text-[10px] font-extrabold uppercase tracking-wider m3-muted">Seções do Manual (${matchedSections.length})</div>`;
+    html += matchedSections.map(sec => {
+      const plain = getSectionPlainText(sec);
+      const idx = normalizeText(plain).indexOf(qNorm);
+      const start = Math.max(0, idx - 45);
+      const snippet = (start > 0 ? '...' : '') + plain.slice(start, start + 140) + (start + 140 < plain.length ? '...' : '');
+      return `
+        <button type="button" data-search-section="${sec.id}" class="w-full text-left p-3.5 rounded-2xl m3-tonal hover:opacity-90 border m3-border">
+          <div class="flex items-center gap-2">
+            <span style="background-color: var(--md-primary); color: var(--md-on-primary);" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold">${sec.num}</span>
+            <span class="font-display text-xs sm:text-sm font-bold m3-text">${highlightText(sec.title, q)}</span>
+          </div>
+          <p class="text-xs m3-muted mt-1">${highlightText(snippet, q)}</p>
+        </button>
+      `;
+    }).join('');
+  }
+
+  container.innerHTML = html;
+}
+
+// ============================================================
+// PRINT BUILDER
+// ============================================================
+function buildPrintContainer() {
+  const el = document.getElementById('printContainer');
+  el.innerHTML = `
+    <div style="border-bottom: 3px solid #b99655; padding-bottom: 12px; margin-bottom: 18px;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #8f6c2b; font-weight: 700;">A2M Assessoria Jurídica Condominial</div>
+      <h1 style="font-size: 22px; font-weight: 800; color: #143052; margin: 4px 0;">Manual de Atendimento, Conduta e Procedimentos Operacionais</h1>
+      <div style="font-size: 12px; color: #475569;">Uso interno · Equipe de Atendimento · Goiânia-GO · Versão 1.3 · Criado por Douglas Silva</div>
+    </div>
+    ${SECTIONS.map(sec => `
+      <div class="print-section">
+        <h2 style="font-size: 16px; font-weight: 700; color: #143052; margin-bottom: 8px;">Seção ${sec.num} — ${sec.title}</h2>
+        <div class="space-y-3">${renderSectionBodyBlocks(sec)}</div>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ============================================================
+// MAIN RENDER LOOP
+// ============================================================
+function renderApp() {
+  updateHeaderTitle();
+  renderSidebar();
+
+  const main = document.getElementById('mainContent');
+  if (state.view === 'home') main.innerHTML = renderHomeView();
+  else if (state.view === 'normas') main.innerHTML = renderNormasView();
+  else if (state.view === 'scripts') main.innerHTML = renderScriptsView();
+  else if (state.view === 'feriados') main.innerHTML = renderFeriadosView();
+  else if (state.view === 'prazos') main.innerHTML = renderPrazosView();
+
+  if (window.lucide && window.lucide.createIcons) {
+    window.lucide.createIcons();
+  }
+}
+
+// ============================================================
+// EVENT DELEGATION
+// ============================================================
+document.addEventListener('click', e => {
+  // Normal full-page view navigation
+  const viewBtn = e.target.closest('[data-view]');
+  if (viewBtn) {
+    state.view = viewBtn.dataset.view;
+    closeMobileSidebar();
+    renderApp();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  // Go to specific section in Normas page
+  const secBtn = e.target.closest('[data-goto-section]');
+  if (secBtn) {
+    state.view = 'normas';
+    state.normasCategory = 'all';
+    state.normasViewMode = 'focus';
+    state.activeSectionId = secBtn.dataset.gotoSection;
+    closeMobileSidebar();
+    renderApp();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  // Simple Heads-Up for KPI click
+  const kpiBtn = e.target.closest('[data-kpi-headsup]');
+  if (kpiBtn) {
+    const cfg = KPI_HEADSUPS[kpiBtn.dataset.kpiHeadsup];
+    if (cfg) openHeadsup(cfg);
+    return;
+  }
+
+  // Simple Heads-Up for Holiday click (from KPI)
+  const holHeadBtn = e.target.closest('[data-holiday-headsup]');
+  if (holHeadBtn) {
+    const hol = HOLIDAY_MAP[holHeadBtn.dataset.holidayHeadsup];
+    if (hol) {
+      const meta = getScopeMeta(hol.scope);
+      openHeadsup({
+        icon: 'calendar-heart',
+        badge: `${meta.label} · ${formatIsoBR(hol.date)}`,
+        title: hol.name,
+        body: `Base legal: ${hol.law}. Você pode consultar o calendário completo de 2026 e 2027 na aba Feriados Goiânia.`,
+        ctaLabel: 'Abrir Calendário',
+        ctaView: 'feriados'
+      });
+    }
+    return;
+  }
+
+  // Heads-Up CTA -> go to section or view
+  const headSec = e.target.closest('[data-headsup-section]');
+  if (headSec) {
+    closeHeadsup();
+    state.view = 'normas';
+    state.normasCategory = 'all';
+    state.normasViewMode = 'focus';
+    state.activeSectionId = headSec.dataset.headsupSection;
+    renderApp();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  const headView = e.target.closest('[data-headsup-view]');
+  if (headView) {
+    closeHeadsup();
+    state.view = headView.dataset.headsupView;
+    renderApp();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  if (e.target.closest('#closeHeadsupBtn') || e.target.closest('#dismissHeadsupBtn')) {
+    closeHeadsup();
+    return;
+  }
+
+  // Scenario selection on Home
+  const scenBtn = e.target.closest('[data-select-scenario]');
+  if (scenBtn) {
+    state.selectedScenarioId = scenBtn.dataset.selectScenario;
+    renderApp();
+    return;
+  }
+
+  // Normas filters & mode
+  const catBtn = e.target.closest('[data-normas-cat]');
+  if (catBtn) {
+    state.normasCategory = catBtn.dataset.normasCat;
+    renderApp();
+    return;
+  }
+  const modeBtn = e.target.closest('[data-normas-mode]');
+  if (modeBtn) {
+    state.normasViewMode = modeBtn.dataset.normasMode;
+    renderApp();
+    return;
+  }
+
+  // Toggle read
+  const readBtn = e.target.closest('[data-toggle-read]');
+  if (readBtn) {
+    const id = readBtn.dataset.toggleRead;
+    if (state.readSections.includes(id)) {
+      state.readSections = state.readSections.filter(x => x !== id);
+      showToast('Seção desmarcada como lida.');
+    } else {
+      state.readSections = [...state.readSections, id];
+      showToast('Seção marcada como lida!');
+    }
+    saveStorage('a2m_readSections', state.readSections);
+    renderApp();
+    return;
+  }
+
+  // Toggle pin
+  const pinBtn = e.target.closest('[data-toggle-pin]');
+  if (pinBtn) {
+    const id = pinBtn.dataset.togglePin;
+    if (state.pinnedSections.includes(id)) {
+      state.pinnedSections = state.pinnedSections.filter(x => x !== id);
+      showToast('Norma removida dos fixados.');
+    } else {
+      state.pinnedSections = [...state.pinnedSections, id];
+      showToast('Norma fixada no Painel Rápido!');
+    }
+    saveStorage('a2m_pinnedSections', state.pinnedSections);
+    renderApp();
+    return;
+  }
+
+  // Copy script
+  const copyBtn = e.target.closest('[data-copy-script]');
+  if (copyBtn) {
+    const sc = SCRIPTS.find(s => s.id === copyBtn.dataset.copyScript);
+    if (sc) copyText(getResolvedScript(sc), `Script ${sc.code} copiado!`);
+    return;
+  }
+
+  // Greeting switch & Script tag filter
+  const greetBtn = e.target.closest('[data-greeting]');
+  if (greetBtn) {
+    state.greeting = greetBtn.dataset.greeting;
+    renderApp();
+    return;
+  }
+  const tagBtn = e.target.closest('[data-script-tag]');
+  if (tagBtn) {
+    state.scriptTagFilter = tagBtn.dataset.scriptTag;
+    renderApp();
+    return;
+  }
+
+  // Calendar controls
+  const calYearBtn = e.target.closest('[data-cal-year]');
+  if (calYearBtn) {
+    state.calYear = Number(calYearBtn.dataset.calYear);
+    state.selectedHolidayDate = null;
+    renderApp();
+    return;
+  }
+  const calScopeBtn = e.target.closest('[data-cal-scope]');
+  if (calScopeBtn) {
+    state.calScopeFilter = calScopeBtn.dataset.calScope;
+    renderApp();
+    return;
+  }
+  if (e.target.closest('#prevMonthBtn')) {
+    if (state.calMonth === 0) {
+      if (state.calYear > 2026) { state.calYear--; state.calMonth = 11; }
+    } else {
+      state.calMonth--;
+    }
+    renderApp();
+    return;
+  }
+  if (e.target.closest('#nextMonthBtn')) {
+    if (state.calMonth === 11) {
+      if (state.calYear < 2027) { state.calYear++; state.calMonth = 0; }
+    } else {
+      state.calMonth++;
+    }
+    renderApp();
+    return;
+  }
+
+  // Click calendar day -> show compact Heads-Up if it's a holiday
+  const calDay = e.target.closest('[data-cal-day]');
+  if (calDay) {
+    const iso = calDay.dataset.calDay;
+    state.selectedHolidayDate = iso;
+    renderApp();
+    const hol = HOLIDAY_MAP[iso];
+    if (hol) {
+      const meta = getScopeMeta(hol.scope);
+      openHeadsup({
+        icon: 'calendar-heart',
+        badge: `${meta.label} · ${formatIsoBR(hol.date)}`,
+        title: hol.name,
+        body: `Base legal: ${hol.law}.`
+      });
+    }
+    return;
+  }
+
+  // Click holiday in annual list
+  const jumpHol = e.target.closest('[data-jump-holiday]');
+  if (jumpHol) {
+    const iso = jumpHol.dataset.jumpHoliday;
+    state.selectedHolidayDate = iso;
+    state.calMonth = Number(jumpHol.dataset.jumpMonth);
+    renderApp();
+    const hol = HOLIDAY_MAP[iso];
+    if (hol) {
+      const meta = getScopeMeta(hol.scope);
+      openHeadsup({
+        icon: 'calendar-heart',
+        badge: `${meta.label} · ${formatIsoBR(hol.date)}`,
+        title: hol.name,
+        body: `Base legal: ${hol.law}.`
+      });
+    }
+    return;
+  }
+
+  // Search quick pills
+  const quickQ = e.target.closest('[data-q]');
+  if (quickQ) {
+    const inp = document.getElementById('globalSearchInput');
+    inp.value = quickQ.dataset.q;
+    renderSearchResults(inp.value);
+    inp.focus();
+    return;
+  }
+
+  // Search result -> go to section normally
+  const searchSec = e.target.closest('[data-search-section]');
+  if (searchSec) {
+    closeSearchModal();
+    state.view = 'normas';
+    state.normasCategory = 'all';
+    state.normasViewMode = 'focus';
+    state.activeSectionId = searchSec.dataset.searchSection;
+    renderApp();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  // Search result -> go to Feriados page
+  const searchHol = e.target.closest('[data-search-holiday]');
+  if (searchHol) {
+    const iso = searchHol.dataset.searchHoliday;
+    const parts = iso.split('-').map(Number);
+    state.calYear = parts[0];
+    state.calMonth = parts[1] - 1;
+    state.calScopeFilter = 'all';
+    state.selectedHolidayDate = iso;
+    closeSearchModal();
+    state.view = 'feriados';
+    renderApp();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+});
+
+// Input & Change handlers
+document.addEventListener('input', e => {
+  if (e.target.id === 'agentNameInput') {
+    state.agentName = e.target.value;
+    saveStorage('a2m_agentName', state.agentName);
+    const preview = document.getElementById('scriptPreview_sc1');
+    if (preview) preview.innerHTML = getResolvedScriptHtml(SCRIPTS[0]);
+  } else if (e.target.id === 'clientNameInput') {
+    state.clientName = e.target.value;
+    const preview = document.getElementById('scriptPreview_sc1');
+    if (preview) preview.innerHTML = getResolvedScriptHtml(SCRIPTS[0]);
+  } else if (e.target.id === 'globalSearchInput') {
+    renderSearchResults(e.target.value);
+  }
+});
+
+document.addEventListener('change', e => {
+  if (e.target.id === 'calcDateInput') {
+    state.calcDate = e.target.value || toIsoDate(new Date());
+    renderApp();
+  } else if (e.target.id === 'skipHolidaysToggle') {
+    state.skipHolidaysInCalc = e.target.checked;
+    renderApp();
+  }
+});
+
+// Static bindings
+document.getElementById('openSidebarBtn').addEventListener('click', openMobileSidebar);
+document.getElementById('closeSidebarBtn').addEventListener('click', closeMobileSidebar);
+document.getElementById('sidebarBackdrop').addEventListener('click', closeMobileSidebar);
+document.getElementById('openSearchBtn').addEventListener('click', openSearchModal);
+document.getElementById('closeSearchBtn').addEventListener('click', closeSearchModal);
+document.getElementById('clearGlobalSearchBtn').addEventListener('click', () => {
+  const inp = document.getElementById('globalSearchInput');
+  inp.value = '';
+  renderSearchResults('');
+  inp.focus();
+});
+document.getElementById('searchModal').addEventListener('click', e => {
+  if (e.target.id === 'searchModal') closeSearchModal();
+});
+document.getElementById('headsupModal').addEventListener('click', e => {
+  if (e.target.id === 'headsupModal') closeHeadsup();
+});
+document.getElementById('themeToggleBtn').addEventListener('click', () => {
+  state.darkMode = !state.darkMode;
+  saveStorage('a2m_darkMode', state.darkMode);
+  applyTheme();
+});
+document.getElementById('printBtn').addEventListener('click', () => {
+  buildPrintContainer();
+  window.print();
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    openSearchModal();
+  } else if (e.key === 'Escape') {
+    closeSearchModal();
+    closeHeadsup();
+    closeMobileSidebar();
+  }
+});
+
+// Init
+applyTheme();
+renderApp();
+</script>
+</body>
+</html>
