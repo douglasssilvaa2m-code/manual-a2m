@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 <script>
 tailwind.config = {
   darkMode: 'class',
@@ -57,6 +58,8 @@ tailwind.config = {
     --md-success-text: #14532d;
     --md-warning-bg: #fef3c7;
     --md-warning-text: #78350f;
+    --md-bday-bg: #fce7f3;
+    --md-bday-text: #831843;
 
     --md-rail-bg: #10243d;
     --md-rail-text: #e6eef8;
@@ -100,6 +103,8 @@ tailwind.config = {
     --md-success-text: #86efac;
     --md-warning-bg: #452c08;
     --md-warning-text: #fde68a;
+    --md-bday-bg: #4c1130;
+    --md-bday-text: #fbcfe8;
 
     --md-rail-bg: #0f1722;
     --md-rail-text: #eef4fb;
@@ -271,6 +276,11 @@ tailwind.config = {
         <span>Manter conectado neste navegador</span>
       </label>
 
+      <div id="sessionExpiredNotice" style="background-color: var(--md-primary-container); color: var(--md-on-primary-container);" class="hidden px-4 py-3 rounded-2xl text-xs font-bold items-center gap-2">
+        <i data-lucide="clock" class="w-4 h-4 shrink-0"></i>
+        <span>Sessão expirada após 1 hora sem atividade. Entre novamente.</span>
+      </div>
+
       <div id="loginError" style="background-color: var(--md-warning-bg); color: var(--md-warning-text);" class="hidden px-4 py-3 rounded-2xl text-xs font-bold items-center gap-2">
         <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
         <span>Usuário ou senha incorretos. Tente novamente.</span>
@@ -341,7 +351,7 @@ tailwind.config = {
       <button type="button" data-view="feriados" class="nav-view-btn w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm transition-all">
         <span class="flex items-center gap-3">
           <i data-lucide="calendar-heart" class="w-4 h-4 shrink-0"></i>
-          <span>Feriados Goiânia</span>
+          <span>Calendário & Datas</span>
         </span>
         <span class="nav-badge text-[10px] px-2 py-0.5 rounded-full font-bold">GO</span>
       </button>
@@ -367,7 +377,10 @@ tailwind.config = {
     <div class="p-4 border-t border-white/10 bg-black/20">
       <div class="flex items-center justify-between text-[11px] mb-1.5" style="color: var(--md-rail-muted);">
         <span>Progresso de leitura</span>
-        <span id="sidebarReadPct" class="font-bold text-[#f0cc7e]">0%</span>
+        <span class="flex items-center gap-2">
+          <button type="button" id="resetReadProgressBtn" class="hidden text-[10px] underline opacity-75 hover:opacity-100" title="Zerar progresso de leitura">Zerar</button>
+          <span id="sidebarReadPct" class="font-bold text-[#f0cc7e]">0%</span>
+        </span>
       </div>
       <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-3">
         <div id="sidebarReadBar" class="h-full bg-gradient-to-r from-[#d4ae61] to-[#f5d996] rounded-full transition-all duration-300" style="width: 0%"></div>
@@ -405,6 +418,13 @@ tailwind.config = {
         </div>
 
         <div class="flex items-center gap-2 shrink-0">
+          <!-- Live Clock & Shift Status Pill -->
+          <div id="liveClockPill" class="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-full m3-tonal border m3-border text-xs font-bold m3-text select-none" title="Horário ao vivo e status do expediente A2M">
+            <span id="shiftStatusDot" class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+            <span id="liveClockTime" class="font-display tabular-nums tracking-tight">--:--:--</span>
+            <span id="shiftStatusText" class="hidden xl:inline text-[11px] font-semibold m3-muted border-l m3-border pl-2">--</span>
+          </div>
+
           <!-- Search Pill -->
           <button type="button" id="openSearchBtn" class="flex items-center gap-2.5 px-4 py-2.5 rounded-full m3-tonal m3-text hover:opacity-90 text-sm font-medium border m3-border transition-all">
             <i data-lucide="search" class="w-4 h-4 m3-muted"></i>
@@ -536,6 +556,61 @@ const MONTH_NAMES = [
   'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
 ];
+
+// ============================================================
+// ANIVERSARIANTES DA EQUIPE A2M (DD/MM)
+// ============================================================
+const BIRTHDAYS = [
+  {
+    name: 'Nylra', day: 13, month: 1,
+    message: 'Nylra, começar o ano celebrando a sua vida é especial demais! Que esse novo ciclo venha cheio de luz, paz, conquistas lindas e momentos felizes ao lado de quem você ama. A equipe A2M tem muito orgulho de caminhar com você!'
+  },
+  {
+    name: 'Amanda', day: 27, month: 1,
+    message: 'Amanda, hoje o dia é todinho seu! Que nunca faltem motivos para sorrir, saúde de sobra e novos sonhos se realizando a cada passo. Obrigado por fazer a diferença todos os dias aqui na A2M — aproveite muito o seu dia!'
+  },
+  {
+    name: 'Douglas', day: 8, month: 5,
+    message: 'Douglas, parabéns pelo seu dia! Que este novo ano de vida traga ainda mais sabedoria, energia boa, projetos vitoriosos e momentos inesquecíveis. É um privilégio contar com você na A2M — celebre em grande estilo!'
+  },
+  {
+    name: 'Maykon', day: 24, month: 8,
+    message: 'Maykon, feliz aniversário! Desejamos que o seu novo ciclo seja repleto de grandes conquistas, saúde, leveza e muita prosperidade. Valeu demais pela parceria no dia a dia da A2M — curta muito esse dia especial!'
+  },
+  {
+    name: 'Paulo', day: 27, month: 10,
+    message: 'Paulo, hoje celebramos você! Que a vida te retribua com muita saúde, paz, sucesso em cada meta e dias cada vez mais felizes. A A2M fica muito melhor com a sua presença na equipe — aproveite bastante!'
+  },
+  {
+    name: 'Raniele', day: 16, month: 11,
+    message: 'Raniele, parabéns pelo seu aniversário! Que esse novo capítulo seja cheio de realizações, sorrisos sinceros e portas abertas para tudo o que você sonha. A equipe A2M torce muito por você — tenha um dia maravilhoso!'
+  },
+  {
+    name: 'Carol', day: 26, month: 11,
+    message: 'Carol, feliz aniversário! Que o seu dia seja tão especial, leve e radiante quanto a energia que você traz para a nossa rotina. Muita saúde, alegria e sucesso no seu novo ciclo — um abraço enorme de toda a equipe A2M!'
+  },
+  {
+    name: 'Eduarda', day: 27, month: 11,
+    message: 'Eduarda, chegou o seu grande dia! Desejamos um ano novo de vida cheio de bênçãos, conquistas incríveis e momentos que aquecem o coração. É muito bom ter você no time A2M — celebre e aproveite cada segundo!'
+  }
+];
+
+function getBirthdaysOn(month1to12, day) {
+  return BIRTHDAYS.filter(b => b.month === month1to12 && b.day === day);
+}
+
+function formatBdayDM(b) {
+  return String(b.day).padStart(2, '0') + '/' + String(b.month).padStart(2, '0');
+}
+
+function getNextBirthday() {
+  const now = new Date();
+  const curM = now.getMonth() + 1;
+  const curD = now.getDate();
+  const sorted = [...BIRTHDAYS].sort((a, b) => (a.month * 100 + a.day) - (b.month * 100 + b.day));
+  const upcoming = sorted.find(b => (b.month * 100 + b.day) >= (curM * 100 + curD));
+  return upcoming || sorted[0];
+}
 
 // ============================================================
 // SIMPLE HEADS-UP CARDS FOR KPI CLICKS
@@ -1101,6 +1176,26 @@ function saveStorage(key, value) {
   } catch (e) {}
 }
 
+function getReadStorageKey() {
+  const u = normalizeText(state.loggedUser || 'default');
+  return 'a2m_readSections_' + (u || 'default');
+}
+
+function loadUserReadSections() {
+  return loadStorage(getReadStorageKey(), []);
+}
+
+function markSectionReadAuto(secId) {
+  if (!secId) return;
+  if (!state.readSections.includes(secId)) {
+    state.readSections = [...state.readSections, secId];
+    saveStorage(getReadStorageKey(), state.readSections);
+    if (state.readSections.length === SECTIONS.length) {
+      showToast('Parabéns! Você leu todas as 11 seções do Manual A2M! 🎉');
+    }
+  }
+}
+
 function getAutoGreeting() {
   const h = new Date().getHours();
   if (h >= 5 && h < 12) return 'Bom dia';
@@ -1132,13 +1227,16 @@ const state = {
   selectedHolidayDate: null,
   darkMode: loadStorage('a2m_darkMode', false),
   authenticated: loadStorage('a2m_auth_v2', false),
-  loggedUser: loadStorage('a2m_loggedUser', '')
+  loggedUser: loadStorage('a2m_loggedUser', ''),
+  lastActivity: loadStorage('a2m_lastActivity', 0)
 };
+
+const SESSION_TIMEOUT_MS = 60 * 60 * 1000; // 1 hora sem atividade
 
 const AUTH_USERS = {
   eduarda: 'Eduarda',
   amanda: 'Amanda',
-  maycon: 'Maycon',
+  maykon: 'Maykon',
   nylra: 'Nylra',
   raniele: 'Raniele',
   douglas: 'Douglas',
@@ -1304,7 +1402,8 @@ function getScopeMeta(scope) {
     nacional: { label: 'Nacional', bg: 'var(--md-primary-container)', text: 'var(--md-on-primary-container)', dot: '#2563eb' },
     estadual: { label: 'Estadual (GO)', bg: 'var(--md-success-bg)', text: 'var(--md-success-text)', dot: '#16a34a' },
     municipal: { label: 'Municipal (Goiânia)', bg: 'var(--md-tertiary-container)', text: 'var(--md-on-tertiary-container)', dot: '#d97706' },
-    facultativo: { label: 'Ponto Facultativo', bg: 'var(--md-surface-container-high)', text: 'var(--md-on-surface-variant)', dot: '#64748b' }
+    facultativo: { label: 'Ponto Facultativo', bg: 'var(--md-surface-container-high)', text: 'var(--md-on-surface-variant)', dot: '#64748b' },
+    aniversario: { label: 'Aniversariante', bg: 'var(--md-bday-bg)', text: 'var(--md-bday-text)', dot: '#db2777' }
   };
   return map[scope] || map.nacional;
 }
@@ -1368,6 +1467,148 @@ function closeHeadsup() {
   modal.classList.remove('flex');
 }
 
+function openBirthdayCelebration(bdayList, isManualPreview) {
+  if (!bdayList || !bdayList.length) return;
+  const names = bdayList.map(b => b.name).join(' e ');
+  const dm = formatBdayDM(bdayList[0]);
+  const bodyHtml = bdayList.length === 1
+    ? bdayList[0].message
+    : bdayList.map(b => `<strong class="block mb-1">${b.name}:</strong> ${b.message}`).join('<br><br>');
+  openHeadsup({
+    icon: 'cake',
+    badge: isManualPreview ? `Prévia · Aniversário ${dm}` : `Hoje é dia de festa · ${dm}`,
+    title: `Feliz Aniversário, ${names}! 🎉`,
+    body: bodyHtml,
+    ctaLabel: 'Ver Aniversariantes',
+    ctaView: 'feriados'
+  });
+  if (window.confetti) {
+    try {
+      window.confetti({ particleCount: 70, spread: 68, origin: { y: 0.6 } });
+    } catch (e) {}
+  }
+}
+
+function showWelcomeGreeting(displayName) {
+  const saud = getAutoGreeting();
+  const emoji = saud === 'Bom dia' ? '☀️' : (saud === 'Boa tarde' ? '👋' : '🌙');
+  openHeadsup({
+    icon: 'sparkles',
+    badge: 'Acesso confirmado · Equipe A2M',
+    title: `${saud}, ${displayName}! ${emoji}`,
+    body: `Que bom ter você por aqui, ${displayName}! O painel operacional da A2M está pronto e seus scripts já foram preenchidos automaticamente com o seu nome. Bom trabalho!`
+  });
+}
+
+let lastActivitySavedAt = 0;
+function recordActivity(forceSave) {
+  if (!state.authenticated) return;
+  const nowMs = Date.now();
+  state.lastActivity = nowMs;
+  if (forceSave || (nowMs - lastActivitySavedAt > 15000)) {
+    lastActivitySavedAt = nowMs;
+    saveStorage('a2m_lastActivity', nowMs);
+  }
+}
+
+function isSessionExpired() {
+  if (!state.authenticated) return false;
+  if (!state.lastActivity) return false;
+  return (Date.now() - state.lastActivity) > SESSION_TIMEOUT_MS;
+}
+
+function performLogout(expired) {
+  state.authenticated = false;
+  state.loggedUser = '';
+  state.lastActivity = 0;
+  saveStorage('a2m_auth_v2', false);
+  saveStorage('a2m_loggedUser', '');
+  saveStorage('a2m_lastActivity', 0);
+  const uInp = document.getElementById('loginUser');
+  const pInp = document.getElementById('loginPass');
+  if (uInp) uInp.value = '';
+  if (pInp) pInp.value = '';
+  closeMobileSidebar();
+  closeSearchModal();
+  closeHeadsup();
+  updateAuthUI();
+
+  const expEl = document.getElementById('sessionExpiredNotice');
+  if (expEl) {
+    if (expired) {
+      expEl.classList.remove('hidden');
+      expEl.classList.add('flex');
+    } else {
+      expEl.classList.add('hidden');
+      expEl.classList.remove('flex');
+    }
+  }
+  showToast(expired ? 'Sessão expirada após 1h de inatividade.' : 'Sessão encerrada.');
+}
+
+function checkTodayBirthdays() {
+  const now = new Date();
+  const m = now.getMonth() + 1;
+  const d = now.getDate();
+  const todayBdays = getBirthdaysOn(m, d);
+  if (!todayBdays.length) return;
+  const todayKey = toIsoDate(now);
+  const lastShown = loadStorage('a2m_bday_shown_date', '');
+  if (lastShown !== todayKey) {
+    saveStorage('a2m_bday_shown_date', todayKey);
+    setTimeout(() => openBirthdayCelebration(todayBdays, false), 350);
+  }
+}
+
+let clockIntervalId = null;
+function updateLiveClock() {
+  if (isSessionExpired()) {
+    performLogout(true);
+    return;
+  }
+  const timeEl = document.getElementById('liveClockTime');
+  const dotEl = document.getElementById('shiftStatusDot');
+  const statusEl = document.getElementById('shiftStatusText');
+  if (!timeEl) return;
+
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  timeEl.textContent = `${hh}:${mm}:${ss}`;
+
+  const wd = now.getDay(); // 0=Dom, 1=Seg .. 5=Sex, 6=Sab
+  const mins = now.getHours() * 60 + now.getMinutes();
+  const iso = toIsoDate(now);
+  const isHol = isOfficialHoliday(iso);
+
+  let inShift = false;
+  if (!isHol && wd >= 1 && wd <= 4) {
+    inShift = mins >= 8 * 60 && mins < 18 * 60;
+  } else if (!isHol && wd === 5) {
+    inShift = mins >= 8 * 60 && mins < 17 * 60;
+  }
+
+  if (dotEl && statusEl) {
+    if (isHol) {
+      dotEl.className = 'w-2 h-2 rounded-full bg-amber-500 shrink-0';
+      statusEl.textContent = 'Feriado';
+    } else if (inShift) {
+      dotEl.className = 'w-2 h-2 rounded-full bg-emerald-500 shrink-0';
+      statusEl.textContent = 'Em expediente';
+    } else {
+      dotEl.className = 'w-2 h-2 rounded-full bg-slate-400 shrink-0';
+      statusEl.textContent = 'Fora do expediente';
+    }
+  }
+}
+
+function startLiveClock() {
+  if (clockIntervalId) clearInterval(clockIntervalId);
+  updateLiveClock();
+  clockIntervalId = setInterval(updateLiveClock, 1000);
+}
+
 // ============================================================
 // THEME & SIDEBAR
 // ============================================================
@@ -1390,10 +1631,13 @@ function updateAuthUI() {
   const loginEl = document.getElementById('loginScreen');
   const appEl = document.getElementById('appShell');
   if (state.authenticated) {
+    state.readSections = loadUserReadSections();
     loginEl.classList.add('hidden');
     appEl.classList.remove('hidden');
     appEl.classList.add('flex');
     renderApp();
+    startLiveClock();
+    checkTodayBirthdays();
   } else {
     appEl.classList.add('hidden');
     appEl.classList.remove('flex');
@@ -1421,7 +1665,7 @@ function updateHeaderTitle() {
     home: ['Painel Rápido', 'A2M Assessoria Jurídica Condominial · Goiânia-GO · Uso interno'],
     normas: ['Normas & Procedimentos', 'Leitura organizada por seção — sem cansaço visual'],
     scripts: ['Central de Scripts', 'Personalize seu nome e copie os 7 modelos oficiais em 1 clique'],
-    feriados: ['Feriados em Goiânia-GO', 'Calendário 2026 e 2027 · Nacionais, Estaduais (GO) e Municipais'],
+    feriados: ['Calendário A2M · Feriados & Aniversariantes', 'Feriados de Goiânia-GO (2026–2027) e aniversários da equipe'],
     prazos: ['Jornada & Calculadora de Prazos', 'Horários do expediente, pausas, meta de CSAT e cálculo de dias úteis']
   };
   const [t, s] = titles[state.view] || titles.home;
@@ -1472,6 +1716,11 @@ function renderSidebar() {
   document.getElementById('sidebarReadCounter').textContent = `${readCount}/${SECTIONS.length} lidas`;
   document.getElementById('sidebarReadPct').textContent = `${pct}%`;
   document.getElementById('sidebarReadBar').style.width = `${pct}%`;
+  const resetReadBtn = document.getElementById('resetReadProgressBtn');
+  if (resetReadBtn) {
+    if (readCount > 0) resetReadBtn.classList.remove('hidden');
+    else resetReadBtn.classList.add('hidden');
+  }
 
   const listEl = document.getElementById('sidebarSectionsList');
   listEl.innerHTML = SECTIONS.map(sec => {
@@ -1510,7 +1759,7 @@ function renderHomeView() {
           <div class="max-w-2xl">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#f6dca1] text-xs font-bold mb-3">
               <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-              <span>A2M Assessoria Jurídica Condominial · Equipe de Atendimento</span>
+              <span>${state.loggedUser ? `${getAutoGreeting()}, ${escapeHtml(state.loggedUser)} · Equipe A2M` : 'Equipe de Atendimento A2M'}</span>
             </div>
             <h2 class="font-display text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white">
               Manual de Atendimento e Conduta
@@ -1527,7 +1776,7 @@ function renderHomeView() {
             </button>
             <button type="button" data-view="feriados" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-white/15 hover:bg-white/25 text-white font-semibold text-sm border border-white/20 transition-all">
               <i data-lucide="calendar-heart" class="w-4 h-4 text-[#f6dca1]"></i>
-              <span>Feriados Goiânia</span>
+              <span>Calendário & Datas</span>
             </button>
             <button type="button" data-view="prazos" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-slate-100 font-semibold text-xs border border-white/15 transition-all">
               <i data-lucide="calculator" class="w-4 h-4 text-[#f6dca1]"></i>
@@ -2032,12 +2281,16 @@ function renderFeriadosView() {
   const yearHolidays = HOLIDAYS.filter(h => h.date.startsWith(String(state.calYear)));
   const filteredYearHolidays = state.calScopeFilter === 'all'
     ? yearHolidays
-    : yearHolidays.filter(h => h.scope === state.calScopeFilter);
+    : (state.calScopeFilter === 'aniversario' ? [] : yearHolidays.filter(h => h.scope === state.calScopeFilter));
 
   const firstDay = new Date(state.calYear, state.calMonth, 1);
   const daysInMonth = new Date(state.calYear, state.calMonth + 1, 0).getDate();
   const startWeekday = firstDay.getDay();
   const todayIso = toIsoDate(new Date());
+  const nextBday = getNextBirthday();
+  const nowObj = new Date();
+  const todayM = nowObj.getMonth() + 1;
+  const todayD = nowObj.getDate();
 
   let cellsHtml = '';
   for (let i = 0; i < startWeekday; i++) {
@@ -2046,19 +2299,30 @@ function renderFeriadosView() {
   for (let day = 1; day <= daysInMonth; day++) {
     const iso = `${state.calYear}-${String(state.calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     const hol = HOLIDAY_MAP[iso];
-    const matchesFilter = hol && (state.calScopeFilter === 'all' || hol.scope === state.calScopeFilter);
+    const bdays = getBirthdaysOn(state.calMonth + 1, day);
+    const showHol = hol && (state.calScopeFilter === 'all' || state.calScopeFilter === hol.scope);
+    const showBday = bdays.length > 0 && (state.calScopeFilter === 'all' || state.calScopeFilter === 'aniversario');
     const isToday = iso === todayIso;
     const isSelected = state.selectedHolidayDate === iso;
-    const meta = matchesFilter ? getScopeMeta(hol.scope) : null;
+
+    let cellStyle = 'background-color: var(--md-surface-container-low); color: var(--md-on-surface);';
+    if (showBday) {
+      const bm = getScopeMeta('aniversario');
+      cellStyle = `background-color: ${bm.bg}; color: ${bm.text};`;
+    } else if (showHol) {
+      const hm = getScopeMeta(hol.scope);
+      cellStyle = `background-color: ${hm.bg}; color: ${hm.text};`;
+    }
 
     cellsHtml += `
       <button type="button" data-cal-day="${iso}"
-        style="${matchesFilter
-          ? `background-color: ${meta.bg}; color: ${meta.text};`
-          : 'background-color: var(--md-surface-container-low); color: var(--md-on-surface);'} ${isSelected ? 'outline: 2px solid var(--md-tertiary); outline-offset: 1px;' : ''}"
+        style="${cellStyle} ${isSelected ? 'outline: 2px solid var(--md-tertiary); outline-offset: 1px;' : ''}"
         class="relative h-12 sm:h-14 rounded-2xl flex flex-col items-center justify-center text-xs sm:text-sm font-bold border ${isToday ? 'border-2' : ''} m3-border transition-transform hover:scale-105">
         <span>${day}</span>
-        ${matchesFilter ? `<span class="w-1.5 h-1.5 rounded-full mt-0.5" style="background-color: ${meta.dot};"></span>` : ''}
+        <span class="flex items-center gap-1 mt-0.5">
+          ${showHol ? `<span class="w-1.5 h-1.5 rounded-full" style="background-color: ${getScopeMeta(hol.scope).dot};"></span>` : ''}
+          ${showBday ? `<span class="w-1.5 h-1.5 rounded-full" style="background-color: ${getScopeMeta('aniversario').dot};"></span>` : ''}
+        </span>
       </button>
     `;
   }
@@ -2078,10 +2342,11 @@ function renderFeriadosView() {
         <div class="flex items-center gap-1.5 flex-wrap">
           ${[
             ['all', 'Todos'],
+            ['aniversario', 'Aniversariantes (8)'],
             ['nacional', 'Nacional'],
             ['estadual', 'Estadual (GO)'],
             ['municipal', 'Municipal (Goiânia)'],
-            ['facultativo', 'Ponto Facultativo']
+            ['facultativo', 'Facultativo']
           ].map(([id, lbl]) => {
             const active = state.calScopeFilter === id;
             return `
@@ -2110,17 +2375,17 @@ function renderFeriadosView() {
             <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
           </div>
           <div class="grid grid-cols-7 gap-2">${cellsHtml}</div>
-          <p class="text-xs m3-muted text-center mt-4">Toque em qualquer data colorida para ver os detalhes do feriado em um aviso rápido.</p>
+          <p class="text-xs m3-muted text-center mt-4">Toque em qualquer data colorida para ver o feriado ou felicitar o aniversariante.</p>
         </div>
 
-        <!-- Annual List Card -->
-        <div class="lg:col-span-5 m3-card rounded-[28px] flex flex-col max-h-[520px] overflow-hidden">
+        <!-- Annual Holidays List Card -->
+        <div class="lg:col-span-5 m3-card rounded-[28px] flex flex-col max-h-[500px] overflow-hidden">
           <div style="border-color: var(--md-outline-variant);" class="px-5 py-4 border-b flex items-center justify-between">
             <span class="font-display text-base font-extrabold m3-text">Feriados em ${state.calYear}</span>
             <span class="px-3 py-1 rounded-full m3-tonal text-xs font-bold m3-muted">${filteredYearHolidays.length} datas</span>
           </div>
           <div class="overflow-y-auto p-3.5 space-y-2.5 flex-1">
-            ${filteredYearHolidays.map(h => {
+            ${filteredYearHolidays.length ? filteredYearHolidays.map(h => {
               const meta = getScopeMeta(h.scope);
               const mIdx = Number(h.date.split('-')[1]) - 1;
               return `
@@ -2133,10 +2398,46 @@ function renderFeriadosView() {
                   <div class="text-[11px] m3-muted mt-0.5">${h.law}</div>
                 </button>
               `;
-            }).join('')}
+            }).join('') : `
+              <div class="p-6 text-center text-xs m3-muted">Filtro de aniversariantes ativo. Confira a lista completa da equipe logo abaixo!</div>
+            `}
           </div>
         </div>
       </div>
+
+      <!-- Aniversariantes da Equipe A2M (Visible to everyone) -->
+      <section class="m3-card rounded-[28px] p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="flex items-center gap-3">
+            <span style="background-color: var(--md-bday-bg); color: var(--md-bday-text);" class="w-10 h-10 rounded-[14px] flex items-center justify-center shrink-0">
+              <i data-lucide="cake" class="w-5 h-5"></i>
+            </span>
+            <div>
+              <h3 class="font-display text-base sm:text-lg font-extrabold m3-text">Aniversariantes da Equipe A2M</h3>
+              <p class="text-xs m3-muted">Próximo aniversário: <strong class="m3-text">${nextBday.name} (${formatBdayDM(nextBday)})</strong> · Popup de felicitação automático na data</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          ${BIRTHDAYS.map(b => {
+            const isTodayBday = b.month === todayM && b.day === todayD;
+            const isNext = b.name === nextBday.name && !isTodayBday;
+            return `
+              <button type="button" data-preview-bday="${b.name}"
+                style="${isTodayBday ? 'background-color: var(--md-bday-bg); color: var(--md-bday-text); border-color: #db2777;' : 'background-color: var(--md-surface-container); color: var(--md-on-surface); border-color: var(--md-outline-variant);'}"
+                class="text-left p-4 rounded-[22px] border transition-transform hover:-translate-y-0.5">
+                <div class="flex items-center justify-between gap-1 mb-1.5">
+                  <span style="background-color: var(--md-bday-bg); color: var(--md-bday-text);" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold">${formatBdayDM(b)}</span>
+                  ${isTodayBday ? '<span class="text-[10px] font-extrabold uppercase">Hoje! 🎉</span>' : (isNext ? '<span class="text-[10px] font-bold m3-muted">Próximo</span>' : '')}
+                </div>
+                <div class="font-display text-sm sm:text-base font-extrabold">${b.name}</div>
+                <div class="text-[11px] opacity-75 mt-0.5">Toque para celebrar</div>
+              </button>
+            `;
+          }).join('')}
+        </div>
+      </section>
     </div>
   `;
 }
@@ -2255,8 +2556,9 @@ function renderSearchResults(rawQuery) {
   const matchedSections = SECTIONS.filter(sec => normalizeText(getSectionPlainText(sec)).includes(qNorm));
   const matchedScripts = SCRIPTS.filter(sc => normalizeText(sc.title + ' ' + sc.raw + ' ' + sc.tag).includes(qNorm));
   const matchedHolidays = HOLIDAYS.filter(h => normalizeText(h.name + ' ' + h.scope + ' ' + h.date + ' feriado').includes(qNorm)).slice(0, 6);
+  const matchedBirthdays = BIRTHDAYS.filter(b => normalizeText(b.name + ' ' + formatBdayDM(b) + ' aniversario aniversariante').includes(qNorm));
 
-  if (!matchedSections.length && !matchedScripts.length && !matchedHolidays.length) {
+  if (!matchedSections.length && !matchedScripts.length && !matchedHolidays.length && !matchedBirthdays.length) {
     container.innerHTML = `
       <div class="p-8 text-center">
         <div class="font-display text-sm font-bold m3-text mb-1">Nenhum resultado para "${escapeHtml(q)}"</div>
@@ -2278,6 +2580,19 @@ function renderSearchResults(rawQuery) {
         </div>
         <button type="button" data-copy-script="${sc.id}" class="m3-btn-primary shrink-0 px-3 py-1.5 rounded-full text-xs font-bold">Copiar</button>
       </div>
+    `).join('');
+  }
+
+  if (matchedBirthdays.length) {
+    html += `<div class="px-2 pt-2 text-[10px] font-extrabold uppercase tracking-wider m3-muted">Aniversariantes (${matchedBirthdays.length})</div>`;
+    html += matchedBirthdays.map(b => `
+      <button type="button" data-search-bday="${b.name}" class="w-full text-left p-3 rounded-2xl m3-tonal hover:opacity-90 border m3-border flex items-center justify-between gap-3">
+        <div>
+          <div class="font-display text-xs sm:text-sm font-bold m3-text">${highlightText(b.name, q)}</div>
+          <div class="text-xs m3-muted">Aniversário em ${formatBdayDM(b)}</div>
+        </div>
+        <span style="background-color: var(--md-bday-bg); color: var(--md-bday-text);" class="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold">Aniversariante</span>
+      </button>
     `).join('');
   }
 
@@ -2362,10 +2677,20 @@ function renderApp() {
 // EVENT DELEGATION
 // ============================================================
 document.addEventListener('click', e => {
+  // Reset reading progress
+  if (e.target.closest('#resetReadProgressBtn')) {
+    state.readSections = [];
+    saveStorage(getReadStorageKey(), []);
+    renderApp();
+    showToast('Progresso de leitura zerado.');
+    return;
+  }
+
   // Normal full-page view navigation
   const viewBtn = e.target.closest('[data-view]');
   if (viewBtn) {
     state.view = viewBtn.dataset.view;
+    if (state.view === 'normas') markSectionReadAuto(state.activeSectionId);
     closeMobileSidebar();
     renderApp();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2379,6 +2704,7 @@ document.addEventListener('click', e => {
     state.normasCategory = 'all';
     state.normasViewMode = 'focus';
     state.activeSectionId = secBtn.dataset.gotoSection;
+    markSectionReadAuto(state.activeSectionId);
     closeMobileSidebar();
     renderApp();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2419,6 +2745,7 @@ document.addEventListener('click', e => {
     state.normasCategory = 'all';
     state.normasViewMode = 'focus';
     state.activeSectionId = headSec.dataset.headsupSection;
+    markSectionReadAuto(state.activeSectionId);
     renderApp();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return;
@@ -2471,7 +2798,7 @@ document.addEventListener('click', e => {
       state.readSections = [...state.readSections, id];
       showToast('Seção marcada como lida!');
     }
-    saveStorage('a2m_readSections', state.readSections);
+    saveStorage(getReadStorageKey(), state.readSections);
     renderApp();
     return;
   }
@@ -2547,14 +2874,34 @@ document.addEventListener('click', e => {
     return;
   }
 
-  // Click calendar day -> show compact Heads-Up if it's a holiday
+  // Preview / Celebrate birthday card click
+  const bdayBtn = e.target.closest('[data-preview-bday]');
+  if (bdayBtn) {
+    const found = BIRTHDAYS.find(b => b.name === bdayBtn.dataset.previewBday);
+    if (found) {
+      state.calMonth = found.month - 1;
+      renderApp();
+      const nowC = new Date();
+      const isToday = found.month === (nowC.getMonth() + 1) && found.day === nowC.getDate();
+      openBirthdayCelebration([found], !isToday);
+    }
+    return;
+  }
+
+  // Click calendar day -> show compact Heads-Up for birthday or holiday
   const calDay = e.target.closest('[data-cal-day]');
   if (calDay) {
     const iso = calDay.dataset.calDay;
+    const parts = iso.split('-').map(Number);
     state.selectedHolidayDate = iso;
     renderApp();
+    const bdays = getBirthdaysOn(parts[1], parts[2]);
     const hol = HOLIDAY_MAP[iso];
-    if (hol) {
+    if (bdays.length) {
+      const nowC = new Date();
+      const isToday = parts[1] === (nowC.getMonth() + 1) && parts[2] === nowC.getDate();
+      openBirthdayCelebration(bdays, !isToday);
+    } else if (hol) {
       const meta = getScopeMeta(hol.scope);
       openHeadsup({
         icon: 'calendar-heart',
@@ -2604,8 +2951,24 @@ document.addEventListener('click', e => {
     state.normasCategory = 'all';
     state.normasViewMode = 'focus';
     state.activeSectionId = searchSec.dataset.searchSection;
+    markSectionReadAuto(state.activeSectionId);
     renderApp();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  // Search result -> birthday
+  const searchBday = e.target.closest('[data-search-bday]');
+  if (searchBday) {
+    const found = BIRTHDAYS.find(b => b.name === searchBday.dataset.searchBday);
+    closeSearchModal();
+    if (found) {
+      state.view = 'feriados';
+      state.calMonth = found.month - 1;
+      state.calScopeFilter = 'all';
+      renderApp();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
     return;
   }
 
@@ -2710,6 +3073,12 @@ document.getElementById('loginForm').addEventListener('submit', e => {
   const errEl = document.getElementById('loginError');
   const cardEl = document.getElementById('loginCard');
 
+  const expEl = document.getElementById('sessionExpiredNotice');
+  if (expEl) {
+    expEl.classList.add('hidden');
+    expEl.classList.remove('flex');
+  }
+
   if (Object.prototype.hasOwnProperty.call(AUTH_USERS, userKey) && passVal === AUTH_PASS) {
     const displayName = AUTH_USERS[userKey];
     errEl.classList.add('hidden');
@@ -2717,11 +3086,19 @@ document.getElementById('loginForm').addEventListener('submit', e => {
     state.authenticated = true;
     state.loggedUser = displayName;
     state.agentName = displayName;
+    state.readSections = loadUserReadSections();
+    state.lastActivity = Date.now();
     saveStorage('a2m_auth_v2', remember);
     saveStorage('a2m_loggedUser', remember ? displayName : '');
     saveStorage('a2m_agentName', displayName);
+    saveStorage('a2m_lastActivity', state.lastActivity);
     updateAuthUI();
-    showToast(`Bem-vindo(a), ${displayName}!`);
+
+    const nowCheck = new Date();
+    const todayBdays = getBirthdaysOn(nowCheck.getMonth() + 1, nowCheck.getDate());
+    if (!todayBdays.length) {
+      setTimeout(() => showWelcomeGreeting(displayName), 180);
+    }
   } else {
     errEl.classList.remove('hidden');
     errEl.classList.add('flex');
@@ -2731,18 +3108,11 @@ document.getElementById('loginForm').addEventListener('submit', e => {
   }
 });
 
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  state.authenticated = false;
-  state.loggedUser = '';
-  saveStorage('a2m_auth_v2', false);
-  saveStorage('a2m_loggedUser', '');
-  document.getElementById('loginUser').value = '';
-  document.getElementById('loginPass').value = '';
-  closeMobileSidebar();
-  closeSearchModal();
-  closeHeadsup();
-  updateAuthUI();
-  showToast('Sessão encerrada.');
+document.getElementById('logoutBtn').addEventListener('click', () => performLogout(false));
+
+// Track user activity to reset 1-hour inactivity timer
+['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart', 'click'].forEach(evt => {
+  window.addEventListener(evt, () => recordActivity(false), { passive: true });
 });
 
 // Keyboard shortcuts
@@ -2760,7 +3130,12 @@ document.addEventListener('keydown', e => {
 
 // Init
 applyTheme();
-updateAuthUI();
+if (state.authenticated && isSessionExpired()) {
+  performLogout(true);
+} else {
+  if (state.authenticated && !state.lastActivity) recordActivity(true);
+  updateAuthUI();
+}
 </script>
 </body>
 </html>
