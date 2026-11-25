@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Painel interativo Material 3 Expressive do Manual de Atendimento, Conduta e Procedimentos Operacionais da A2M Assessoria Jurídica Condominial.">
+<meta name="robots" content="noindex, nofollow">
 <title>Painel Operacional | Manual de Atendimento A2M</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -184,6 +185,12 @@ tailwind.config = {
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
 
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  .shake { animation: shake 0.32s ease-in-out; }
   .fade-in { animation: fadeIn 0.22s var(--m3-standard); }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
@@ -206,7 +213,7 @@ tailwind.config = {
   #printContainer { display: none; }
   @media print {
     body { background: #fff !important; color: #111827 !important; }
-    #appShell, #headsupModal, #searchModal, #toast { display: none !important; }
+    #loginScreen, #appShell, #headsupModal, #searchModal, #toast { display: none !important; }
     #printContainer { display: block !important; padding: 12px; color: #111827 !important; }
     .print-section { break-inside: avoid; margin-bottom: 18px; border-bottom: 1px solid #cbd5e1; padding-bottom: 14px; }
   }
@@ -214,7 +221,75 @@ tailwind.config = {
 </head>
 <body>
 
-<div id="appShell" class="min-h-screen flex flex-col lg:flex-row">
+<!-- ============================================================
+     MATERIAL 3 EXPRESSIVE LOGIN SCREEN
+     ============================================================ -->
+<div id="loginScreen" class="min-h-screen flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+  <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full blur-3xl opacity-25 pointer-events-none" style="background: #1e436d;"></div>
+  <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none" style="background: #b99655;"></div>
+
+  <button type="button" id="loginThemeToggleBtn" class="fixed top-4 right-4 p-2.5 rounded-full m3-card m3-text hover:opacity-85 transition-all" title="Alternar modo claro/noturno" aria-label="Alternar tema">
+    <i data-lucide="moon" id="loginThemeMoon" class="w-4 h-4"></i>
+    <i data-lucide="sun" id="loginThemeSun" class="w-4 h-4 hidden"></i>
+  </button>
+
+  <div id="loginCard" class="m3-card w-full max-w-md rounded-[32px] p-6 sm:p-8 relative z-10 fade-in">
+    <div class="flex flex-col items-center text-center mb-6">
+      <div class="w-14 h-14 rounded-[20px] bg-gradient-to-br from-[#f1cf82] to-[#b99655] flex items-center justify-center text-[#1d1403] font-display font-extrabold text-lg tracking-tight shadow-lg mb-4">
+        A2M
+      </div>
+      <span style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="px-3.5 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider mb-2.5">
+        Acesso Restrito · Equipe A2M
+      </span>
+      <h1 class="font-display text-2xl font-extrabold m3-text">Manual de Atendimento</h1>
+      <p class="text-xs sm:text-sm m3-muted mt-1">Informe o usuário e a senha da equipe para entrar no painel operacional.</p>
+    </div>
+
+    <form id="loginForm" class="space-y-4" novalidate>
+      <div>
+        <label for="loginUser" class="block text-xs font-bold m3-muted mb-1.5">Usuário</label>
+        <div class="relative">
+          <i data-lucide="user" class="w-4 h-4 m3-muted absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+          <input id="loginUser" type="text" autocomplete="username" placeholder="Digite o usuário" required class="w-full pl-11 pr-4 py-3 rounded-2xl m3-tonal m3-text text-sm font-medium border m3-border focus:outline-none">
+        </div>
+      </div>
+
+      <div>
+        <label for="loginPass" class="block text-xs font-bold m3-muted mb-1.5">Senha</label>
+        <div class="relative">
+          <i data-lucide="lock" class="w-4 h-4 m3-muted absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+          <input id="loginPass" type="password" autocomplete="current-password" placeholder="Digite a senha" required class="w-full pl-11 pr-11 py-3 rounded-2xl m3-tonal m3-text text-sm font-medium border m3-border focus:outline-none">
+          <button type="button" id="togglePassVisBtn" class="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full m3-muted hover:opacity-80" aria-label="Mostrar ou ocultar senha">
+            <i data-lucide="eye" id="passEyeOpen" class="w-4 h-4"></i>
+            <i data-lucide="eye-off" id="passEyeClosed" class="w-4 h-4 hidden"></i>
+          </button>
+        </div>
+      </div>
+
+      <label class="flex items-center gap-2.5 text-xs font-medium m3-muted cursor-pointer select-none pt-0.5">
+        <input type="checkbox" id="rememberLogin" checked class="w-4 h-4 accent-[#b99655] cursor-pointer">
+        <span>Manter conectado neste navegador</span>
+      </label>
+
+      <div id="loginError" style="background-color: var(--md-warning-bg); color: var(--md-warning-text);" class="hidden px-4 py-3 rounded-2xl text-xs font-bold items-center gap-2">
+        <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+        <span>Usuário ou senha incorretos. Tente novamente.</span>
+      </div>
+
+      <button type="submit" class="m3-btn-primary w-full py-3.5 rounded-full font-display font-extrabold text-sm shadow-lg flex items-center justify-center gap-2">
+        <span>Entrar no Painel</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
+    </form>
+
+    <div style="border-color: var(--md-outline-variant);" class="mt-6 pt-4 border-t text-center text-[11px] m3-muted">
+      A2M Assessoria Jurídica Condominial · Goiânia-GO<br>
+      Versão 1.3 · Criado por <strong class="m3-text">Douglas Silva</strong>
+    </div>
+  </div>
+</div>
+
+<div id="appShell" class="hidden min-h-screen flex-col lg:flex-row">
   <!-- Mobile Backdrop -->
   <div id="sidebarBackdrop" class="fixed inset-0 bg-slate-950/65 backdrop-blur-sm z-40 hidden lg:hidden"></div>
 
@@ -296,6 +371,16 @@ tailwind.config = {
       </div>
       <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-3">
         <div id="sidebarReadBar" class="h-full bg-gradient-to-r from-[#d4ae61] to-[#f5d996] rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+      <div id="sidebarUserBadge" class="hidden items-center justify-between gap-2 mb-3 px-3 py-2 rounded-2xl bg-white/10">
+        <div class="flex items-center gap-2 min-w-0">
+          <i data-lucide="user-check" class="w-3.5 h-3.5 text-[#f0cc7e] shrink-0"></i>
+          <span id="sidebarUserName" class="text-xs font-bold text-white truncate"></span>
+        </div>
+        <button type="button" id="logoutBtn" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-200 text-[11px] font-bold transition-colors shrink-0" title="Sair do painel">
+          <i data-lucide="log-out" class="w-3 h-3"></i>
+          <span>Sair</span>
+        </button>
       </div>
       <div class="text-[11px] leading-relaxed" style="color: var(--md-rail-muted);">
         <span class="text-white font-semibold">Versão 1.3</span> · 24/11/2026<br>
@@ -1045,8 +1130,23 @@ const state = {
   calMonth: defaultCalMonth,
   calScopeFilter: 'all',
   selectedHolidayDate: null,
-  darkMode: loadStorage('a2m_darkMode', false)
+  darkMode: loadStorage('a2m_darkMode', false),
+  authenticated: loadStorage('a2m_auth_v2', false),
+  loggedUser: loadStorage('a2m_loggedUser', '')
 };
+
+const AUTH_USERS = {
+  eduarda: 'Eduarda',
+  amanda: 'Amanda',
+  maycon: 'Maycon',
+  nylra: 'Nylra',
+  raniele: 'Raniele',
+  douglas: 'Douglas',
+  jessica: 'Jéssica',
+  carol: 'Carol',
+  paulo: 'Paulo'
+};
+const AUTH_PASS = '12345';
 
 // ============================================================
 // UTILITIES
@@ -1273,16 +1373,36 @@ function closeHeadsup() {
 // ============================================================
 function applyTheme() {
   const root = document.documentElement;
-  const moon = document.getElementById('themeIconMoon');
-  const sun = document.getElementById('themeIconSun');
+  const moons = [document.getElementById('themeIconMoon'), document.getElementById('loginThemeMoon')];
+  const suns = [document.getElementById('themeIconSun'), document.getElementById('loginThemeSun')];
   if (state.darkMode) {
     root.classList.add('dark');
-    if (moon) moon.classList.add('hidden');
-    if (sun) sun.classList.remove('hidden');
+    moons.forEach(el => el && el.classList.add('hidden'));
+    suns.forEach(el => el && el.classList.remove('hidden'));
   } else {
     root.classList.remove('dark');
-    if (moon) moon.classList.remove('hidden');
-    if (sun) sun.classList.add('hidden');
+    moons.forEach(el => el && el.classList.remove('hidden'));
+    suns.forEach(el => el && el.classList.add('hidden'));
+  }
+}
+
+function updateAuthUI() {
+  const loginEl = document.getElementById('loginScreen');
+  const appEl = document.getElementById('appShell');
+  if (state.authenticated) {
+    loginEl.classList.add('hidden');
+    appEl.classList.remove('hidden');
+    appEl.classList.add('flex');
+    renderApp();
+  } else {
+    appEl.classList.add('hidden');
+    appEl.classList.remove('flex');
+    loginEl.classList.remove('hidden');
+    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+    setTimeout(() => {
+      const u = document.getElementById('loginUser');
+      if (u) u.focus();
+    }, 40);
   }
 }
 
@@ -1333,6 +1453,19 @@ function renderSidebar() {
       }
     }
   });
+
+  const userBadge = document.getElementById('sidebarUserBadge');
+  const userNameEl = document.getElementById('sidebarUserName');
+  if (userBadge && userNameEl) {
+    if (state.loggedUser) {
+      userNameEl.textContent = 'Olá, ' + state.loggedUser;
+      userBadge.classList.remove('hidden');
+      userBadge.classList.add('flex');
+    } else {
+      userBadge.classList.add('hidden');
+      userBadge.classList.remove('flex');
+    }
+  }
 
   const readCount = state.readSections.length;
   const pct = Math.round((readCount / SECTIONS.length) * 100);
@@ -2547,8 +2680,74 @@ document.getElementById('printBtn').addEventListener('click', () => {
   window.print();
 });
 
+// Auth & Login bindings
+document.getElementById('loginThemeToggleBtn').addEventListener('click', () => {
+  state.darkMode = !state.darkMode;
+  saveStorage('a2m_darkMode', state.darkMode);
+  applyTheme();
+});
+
+document.getElementById('togglePassVisBtn').addEventListener('click', () => {
+  const inp = document.getElementById('loginPass');
+  const openIcon = document.getElementById('passEyeOpen');
+  const closedIcon = document.getElementById('passEyeClosed');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    openIcon.classList.add('hidden');
+    closedIcon.classList.remove('hidden');
+  } else {
+    inp.type = 'password';
+    openIcon.classList.remove('hidden');
+    closedIcon.classList.add('hidden');
+  }
+});
+
+document.getElementById('loginForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const userKey = normalizeText((document.getElementById('loginUser').value || '').trim());
+  const passVal = (document.getElementById('loginPass').value || '').trim();
+  const remember = document.getElementById('rememberLogin').checked;
+  const errEl = document.getElementById('loginError');
+  const cardEl = document.getElementById('loginCard');
+
+  if (Object.prototype.hasOwnProperty.call(AUTH_USERS, userKey) && passVal === AUTH_PASS) {
+    const displayName = AUTH_USERS[userKey];
+    errEl.classList.add('hidden');
+    errEl.classList.remove('flex');
+    state.authenticated = true;
+    state.loggedUser = displayName;
+    state.agentName = displayName;
+    saveStorage('a2m_auth_v2', remember);
+    saveStorage('a2m_loggedUser', remember ? displayName : '');
+    saveStorage('a2m_agentName', displayName);
+    updateAuthUI();
+    showToast(`Bem-vindo(a), ${displayName}!`);
+  } else {
+    errEl.classList.remove('hidden');
+    errEl.classList.add('flex');
+    cardEl.classList.remove('shake');
+    void cardEl.offsetWidth;
+    cardEl.classList.add('shake');
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  state.authenticated = false;
+  state.loggedUser = '';
+  saveStorage('a2m_auth_v2', false);
+  saveStorage('a2m_loggedUser', '');
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  closeMobileSidebar();
+  closeSearchModal();
+  closeHeadsup();
+  updateAuthUI();
+  showToast('Sessão encerrada.');
+});
+
 // Keyboard shortcuts
 document.addEventListener('keydown', e => {
+  if (!state.authenticated) return;
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
     e.preventDefault();
     openSearchModal();
@@ -2561,7 +2760,7 @@ document.addEventListener('keydown', e => {
 
 // Init
 applyTheme();
-renderApp();
+updateAuthUI();
 </script>
 </body>
 </html>
