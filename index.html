@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<link rel="icon" type="image/png" href="./favicon.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Painel interativo Material 3 Expressive do Manual de Atendimento, Conduta e Procedimentos Operacionais da A2M Assessoria Jurídica Condominial.">
@@ -341,6 +340,14 @@ tailwind.config = {
         <span class="nav-badge text-[11px] px-2.5 py-0.5 rounded-full font-bold">11</span>
       </button>
 
+      <button type="button" data-view="juridico" class="nav-view-btn w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm transition-all">
+        <span class="flex items-center gap-3">
+          <i data-lucide="scale" class="w-4 h-4 shrink-0"></i>
+          <span>Base Jurídica</span>
+        </span>
+        <span class="nav-badge text-[10px] px-2 py-0.5 rounded-full font-bold">Cláusulas</span>
+      </button>
+
       <button type="button" data-view="scripts" class="nav-view-btn w-full flex items-center justify-between px-4 py-2.5 rounded-full text-sm transition-all">
         <span class="flex items-center gap-3">
           <i data-lucide="message-square-quote" class="w-4 h-4 shrink-0"></i>
@@ -490,6 +497,8 @@ tailwind.config = {
       <button type="button" data-q="boleto" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">boleto</button>
       <button type="button" data-q="Cobmais" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">Cobmais</button>
       <button type="button" data-q="feriado" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">feriado</button>
+      <button type="button" data-q="IPCA" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">IPCA</button>
+      <button type="button" data-q="90 dias" class="quick-q-btn text-xs px-3 py-1 rounded-full m3-card m3-text font-semibold hover:opacity-85">90 dias</button>
     </div>
 
     <div id="globalSearchResults" class="max-h-[58vh] overflow-y-auto p-3 space-y-2"></div>
@@ -1160,6 +1169,117 @@ const QUICK_SCENARIOS = [
 ];
 
 // ============================================================
+// BASE DE CONHECIMENTO — FUNDAMENTAÇÃO CONTRATUAL E CONDOMINIAL
+// ============================================================
+const LEGAL_TOPICS = [
+  {
+    id: 'leg1',
+    num: '01',
+    title: 'Despesa Pré-Operacional',
+    shortTitle: 'Pré-Operacional',
+    basis: 'Contrato de Compra e Venda, cláusula 6.2, alínea "c"; Convenção Condominial, cláusula 8.7.',
+    icon: 'building-2',
+    intro: 'As despesas pré-operacionais destinam-se à preparação do empreendimento para o início de suas atividades. A Convenção prevê que sejam custeadas pelos condôminos por meio de contribuição pré-operacional referente ao mês imediatamente anterior à abertura do condomínio.',
+    listHeading: 'Exemplos de despesas:',
+    items: [
+      'Contratação e treinamento de funcionários.',
+      'Contratação de serviços de terceiros.',
+      'Outros custos necessários à preparação e estruturação operacional do condomínio.'
+    ],
+    outro: 'A Convenção também prevê que a Administradora e/ou Incorporadora poderá antecipar despesas necessárias, com posterior ressarcimento dos valores desembolsados. O Contrato de Compra e Venda inclui expressamente as despesas pré-operacionais entre as obrigações financeiras do comprador.',
+    guidance: 'Esclarecer que a contribuição pré-operacional possui previsão contratual e convencional, tem finalidade específica e não se confunde com a taxa condominial mensal. Para dúvidas sobre competência e vencimento, consultar o cronograma e as comunicações oficiais da Administradora.'
+  },
+  {
+    id: 'leg2',
+    num: '02',
+    title: 'Penalidades por Atraso nas Taxas Condominiais',
+    shortTitle: 'Penalidades / Encargos',
+    basis: 'Convenção Condominial, cláusulas 10.1, 10.1.1 e 10.2.',
+    icon: 'percent',
+    intro: 'O atraso no pagamento das contribuições condominiais implica os encargos previstos na Convenção:',
+    listHeading: 'Encargos previstos:',
+    items: [
+      '<strong>Correção monetária:</strong> variação positiva do IPCA, calculada <em>pro rata die</em>.',
+      '<strong>Juros de mora:</strong> conforme o artigo 406 do Código Civil ou 1% ao mês, ou fração, nos termos da redação convencional.',
+      '<strong>Multa moratória:</strong> 2% sobre o débito.',
+      '<strong>Honorários advocatícios:</strong> 20% do valor do débito, em caso de cobrança judicial ou extrajudicial, além dos custos e despesas decorrentes.'
+    ],
+    outro: 'Se o IPCA for extinto ou considerado inaplicável, a cláusula 10.1.1 prevê sua substituição pelo IPC da FIPE ou, na falta deste, por outro índice escolhido pela Administradora/Síndico que reflita a desvalorização da moeda nacional.',
+    guidance: 'Apresentar os encargos conforme a Convenção e os critérios de cálculo validados para o caso. Não presumir a cumulação de alternativas de juros sem validação jurídica.'
+  },
+  {
+    id: 'leg3',
+    num: '03',
+    title: 'Suspensão do Direito de Utilização do Imóvel',
+    shortTitle: 'Suspensão (> 90 dias)',
+    basis: 'Convenção Condominial, cláusula 7.3.1; artigo 1.358-S, inciso I, do Código Civil.',
+    icon: 'ban',
+    intro: 'A inadimplência da contribuição condominial por período superior a <strong>90 (noventa) dias</strong>, contados do vencimento, poderá acarretar a suspensão do direito de utilização do imóvel pelo multiproprietário, durante o período correspondente à sua fração de tempo, até a regularização do débito.',
+    listHeading: '',
+    items: [],
+    outro: '',
+    guidance: 'Informar que há previsão expressa na Convenção. Não confirmar bloqueio, suspensão ou liberação em caso concreto sem verificar a situação e os procedimentos com o setor responsável.'
+  },
+  {
+    id: 'leg4',
+    num: '04',
+    title: 'Inadimplemento e Encargos Contratuais',
+    shortTitle: 'Inadimplemento',
+    basis: 'Contrato de Compra e Venda, cláusulas 6.1 e 6.2.',
+    icon: 'file-warning',
+    intro: 'O atraso no pagamento de qualquer quantia devida em razão do contrato caracteriza inadimplemento e sujeita o comprador ao pagamento dos valores vencidos e não pagos, com atualização monetária <em>pro rata die</em>, juros de mora ao mês ou fração de mês e multa moratória de 2%.',
+    listHeading: 'O contrato apresenta, entre outras, as seguintes hipóteses de inadimplemento:',
+    items: [
+      'Atraso no pagamento de <strong>3 (três) parcelas</strong> do preço pactuado ou atraso superior a <strong>60 (sessenta) dias</strong> de qualquer parcela ou obrigação financeira, observadas as condições contratuais.',
+      'Cessão ou transferência dos direitos e obrigações a terceiros sem observância dos requisitos da Cláusula Sétima.',
+      'Descumprimento de outras obrigações, incluindo taxas condominiais ordinárias e extraordinárias, despesas pré-operacionais, seguros, IPTU e demais encargos previstos.'
+    ],
+    outro: '',
+    guidance: 'Esclarecer que o contrato prevê obrigações financeiras específicas do comprador. Questões sobre medidas contratuais posteriores devem ser encaminhadas ao setor responsável.'
+  },
+  {
+    id: 'leg5',
+    num: '05',
+    title: 'Constituição em Mora e Notificação do Comprador',
+    shortTitle: 'Mora & Notificação',
+    basis: 'Contrato de Compra e Venda, cláusula 6.2.1.',
+    icon: 'mail-check',
+    intro: 'Nas hipóteses descritas na alínea "a" da cláusula 6.2, o contrato prevê a constituição em mora e a notificação do comprador pelos seguintes meios:',
+    listHeading: 'Meios de notificação previstos:',
+    items: [
+      'E-mail indicado pelo comprador no Quadro Resumo do contrato.',
+      'Interpelação judicial.',
+      'Notificação por intermédio do Cartório de Registro de Títulos e Documentos.'
+    ],
+    outro: 'Após a notificação, o comprador terá prazo máximo de <strong>15 (quinze) dias</strong> para efetuar o pagamento do principal, atualizado monetariamente e acrescido dos juros, multa e despesas suportadas pela VENDEDORA para o cumprimento da notificação.',
+    guidance: 'O prazo de 15 dias está vinculado à notificação prevista na cláusula 6.2.1 e às hipóteses da alínea "a" da cláusula 6.2. Não apresentar esse prazo como regra geral para qualquer débito.'
+  }
+];
+
+const LEGAL_SUMMARY_TABLE = [
+  { topicId: 'leg1', assunto: 'Despesa pré-operacional', fundamentacao: 'Contrato 6.2(c) e Convenção 8.7', previsao: 'Obrigação de pagamento e finalidade da contribuição' },
+  { topicId: 'leg2', assunto: 'Encargos condominiais', fundamentacao: 'Convenção 10.1 e 10.2', previsao: 'IPCA positivo, juros, multa de 2% e honorários de 20% nas condições convencionais' },
+  { topicId: 'leg3', assunto: 'Suspensão de utilização', fundamentacao: 'Convenção 7.3.1', previsao: 'Inadimplência superior a 90 dias' },
+  { topicId: 'leg4', assunto: 'Encargos contratuais', fundamentacao: 'Contrato 6.1', previsao: 'Atualização, juros e multa de 2%' },
+  { topicId: 'leg4', assunto: 'Hipóteses de inadimplemento', fundamentacao: 'Contrato 6.2', previsao: 'Atrasos e descumprimento das obrigações previstas' },
+  { topicId: 'leg5', assunto: 'Notificação e prazo', fundamentacao: 'Contrato 6.2.1', previsao: 'Meios previstos e prazo de até 15 dias após notificação, nas hipóteses indicadas' }
+];
+
+const LEGAL_GUIDELINES = [
+  'Fundamentar as informações nas cláusulas contratuais e condominiais aplicáveis.',
+  'Diferenciar obrigações contratuais, despesas pré-operacionais e taxas condominiais.',
+  'Não prometer cancelamentos, suspensões ou liberações sem confirmação do setor responsável.',
+  'Não garantir medidas automáticas sem análise da situação concreta.',
+  'Encaminhar dúvidas que dependam de análise jurídica, contratual ou administrativa ao setor responsável.'
+];
+
+const LEGAL_GOLDEN_RULE = 'Toda informação sobre cobranças, encargos e consequências da inadimplência deve possuir respaldo documental. Em caso de dúvida, consultar a Convenção Condominial, o Contrato de Compra e Venda e as orientações oficiais da Administradora.';
+
+function getLegalTopicPlainText(t) {
+  return [t.num, t.title, t.basis, t.intro, t.listHeading, ...(t.items || []), t.outro, t.guidance].join(' ').replace(/<[^>]+>/g, '');
+}
+
+// ============================================================
 // STATE MANAGEMENT
 // ============================================================
 function loadStorage(key, fallback) {
@@ -1211,6 +1331,7 @@ const defaultCalMonth = nowDate.getMonth();
 const state = {
   view: 'home', // 'home' | 'normas' | 'scripts' | 'feriados' | 'prazos'
   activeSectionId: 's1',
+  activeLegalTab: 'resumo', // 'resumo' | 'leg1'..'leg5'
   normasCategory: 'all',
   normasViewMode: 'focus', // 'focus' | 'all'
   selectedScenarioId: 'q1',
@@ -1665,6 +1786,7 @@ function updateHeaderTitle() {
   const titles = {
     home: ['Painel Rápido', 'A2M Assessoria Jurídica Condominial · Goiânia-GO · Uso interno'],
     normas: ['Normas & Procedimentos', 'Leitura organizada por seção — sem cansaço visual'],
+    juridico: ['Base Jurídica · Fundamentação Contratual e Condominial', 'Inadimplência, encargos, cláusulas contratuais e orientações ao agente'],
     scripts: ['Central de Scripts', 'Personalize seu nome e copie os 7 modelos oficiais em 1 clique'],
     feriados: ['Calendário A2M · Feriados & Aniversariantes', 'Feriados de Goiânia-GO (2026–2027) e aniversários da equipe'],
     prazos: ['Jornada & Calculadora de Prazos', 'Horários do expediente, pausas, meta de CSAT e cálculo de dias úteis']
@@ -2187,6 +2309,188 @@ function renderNormasView() {
 }
 
 // ============================================================
+// VIEW 2B: BASE JURÍDICA (Fundamentação Contratual e Condominial)
+// ============================================================
+function renderJuridicoView() {
+  const isResumo = state.activeLegalTab === 'resumo';
+  const activeTopic = LEGAL_TOPICS.find(t => t.id === state.activeLegalTab) || LEGAL_TOPICS[0];
+
+  return `
+    <div class="space-y-5 fade-in">
+      <!-- Regra de Ouro Banner -->
+      <section style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="p-5 rounded-[26px] flex items-start gap-3.5 shadow-xs">
+        <span style="background-color: var(--md-primary); color: var(--md-on-primary);" class="w-10 h-10 rounded-[14px] flex items-center justify-center shrink-0 mt-0.5">
+          <i data-lucide="scale" class="w-5 h-5"></i>
+        </span>
+        <div>
+          <div class="font-display text-xs font-extrabold uppercase tracking-wider mb-1">Regra de Ouro · Base de Conhecimento</div>
+          <p class="text-sm leading-relaxed font-medium">${LEGAL_GOLDEN_RULE}</p>
+        </div>
+      </section>
+
+      <!-- 4 Key Legal Numbers Strip -->
+      <section class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <button type="button" data-legal-tab="leg2" class="m3-kpi text-left p-4">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider m3-muted">Multa Moratória</div>
+          <div class="font-display text-2xl font-extrabold m3-text mt-1">2%</div>
+          <div class="text-[11px] m3-muted mt-0.5">Convenção 10.1 · Contrato 6.1</div>
+        </button>
+        <button type="button" data-legal-tab="leg2" class="m3-kpi text-left p-4">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider m3-muted">Honorários</div>
+          <div class="font-display text-2xl font-extrabold m3-text mt-1">20%</div>
+          <div class="text-[11px] m3-muted mt-0.5">Cobrança judicial ou extrajudicial</div>
+        </button>
+        <button type="button" data-legal-tab="leg3" class="m3-kpi text-left p-4">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider m3-muted">Suspensão de Uso</div>
+          <div class="font-display text-2xl font-extrabold m3-text mt-1">&gt; 90 dias</div>
+          <div class="text-[11px] m3-muted mt-0.5">Convenção 7.3.1 · Art. 1.358-S CC</div>
+        </button>
+        <button type="button" data-legal-tab="leg5" class="m3-kpi text-left p-4">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider m3-muted">Pós-Notificação</div>
+          <div class="font-display text-2xl font-extrabold m3-text mt-1">15 dias</div>
+          <div class="text-[11px] m3-muted mt-0.5">Contrato 6.2.1 (hipóteses 6.2 "a")</div>
+        </button>
+      </section>
+
+      <!-- Topic Selector Pills -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1">
+        <button type="button" data-legal-tab="resumo"
+          style="${isResumo
+            ? 'background-color: var(--md-primary); color: var(--md-on-primary); border-color: var(--md-primary);'
+            : 'background-color: var(--md-surface-container-low); color: var(--md-on-surface); border-color: var(--md-outline-variant);'}"
+          class="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border transition-all">
+          <i data-lucide="table-2" class="w-3.5 h-3.5"></i>
+          <span>Quadro-Resumo & Diretrizes</span>
+        </button>
+        ${LEGAL_TOPICS.map(t => {
+          const active = !isResumo && state.activeLegalTab === t.id;
+          return `
+            <button type="button" data-legal-tab="${t.id}"
+              style="${active
+                ? 'background-color: var(--md-primary); color: var(--md-on-primary); border-color: var(--md-primary);'
+                : 'background-color: var(--md-surface-container-low); color: var(--md-on-surface); border-color: var(--md-outline-variant);'}"
+              class="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold border transition-all">
+              <span style="${active ? '' : 'color: var(--md-tertiary);'}">${t.num}</span>
+              <span>${t.shortTitle}</span>
+            </button>
+          `;
+        }).join('')}
+      </div>
+
+      ${isResumo ? `
+        <!-- 06. Quadro-Resumo + 07. Diretrizes Gerais -->
+        <div class="space-y-5">
+          <section class="m3-card rounded-[28px] overflow-hidden">
+            <div style="border-color: var(--md-outline-variant);" class="px-5 sm:px-6 py-4 border-b flex items-center justify-between gap-2">
+              <div>
+                <div class="text-[11px] font-extrabold uppercase tracking-wider" style="color: var(--md-tertiary);">Item 06</div>
+                <h2 class="font-display text-lg font-extrabold m3-text">Quadro-Resumo para Consulta Rápida</h2>
+              </div>
+              <span class="text-xs m3-muted hidden sm:inline">Clique em qualquer linha para abrir os detalhes</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr style="background-color: var(--md-surface-container); border-color: var(--md-outline-variant);" class="border-b text-[11px] font-extrabold uppercase tracking-wider m3-muted">
+                    <th class="px-5 py-3.5">Assunto</th>
+                    <th class="px-5 py-3.5">Fundamentação</th>
+                    <th class="px-5 py-3.5">Previsão</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y m3-border text-sm">
+                  ${LEGAL_SUMMARY_TABLE.map(row => `
+                    <tr data-legal-tab="${row.topicId}" style="border-color: var(--md-outline-variant);" class="cursor-pointer hover:opacity-85 transition-opacity">
+                      <td class="px-5 py-3.5 font-display font-bold m3-text whitespace-nowrap">${row.assunto}</td>
+                      <td class="px-5 py-3.5 whitespace-nowrap">
+                        <span style="background-color: var(--md-primary-container); color: var(--md-on-primary-container);" class="px-2.5 py-1 rounded-full text-xs font-bold">${row.fundamentacao}</span>
+                      </td>
+                      <td class="px-5 py-3.5 m3-muted">${row.previsao}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="m3-card rounded-[28px] p-5 sm:p-6">
+            <div class="text-[11px] font-extrabold uppercase tracking-wider" style="color: var(--md-tertiary);">Item 07</div>
+            <h2 class="font-display text-lg font-extrabold m3-text mb-4">Diretrizes Gerais ao Atendimento</h2>
+            <ul class="space-y-3">
+              ${LEGAL_GUIDELINES.map(g => `
+                <li class="flex items-start gap-3 text-sm sm:text-[15px] m3-text leading-relaxed">
+                  <span class="w-2 h-2 rounded-full mt-2 shrink-0" style="background-color: var(--md-tertiary);"></span>
+                  <span>${g}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </section>
+        </div>
+      ` : `
+        <!-- Focused Legal Topic Detail Card -->
+        <article class="m3-card rounded-[28px] overflow-hidden">
+          <div style="border-color: var(--md-outline-variant);" class="p-5 sm:p-6 border-b flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div class="flex items-start gap-3.5">
+              <div style="background-color: var(--md-primary-container); color: var(--md-on-primary-container);" class="w-12 h-12 rounded-[18px] flex items-center justify-center shrink-0">
+                <i data-lucide="${activeTopic.icon}" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <div class="text-xs font-extrabold uppercase tracking-wider" style="color: var(--md-tertiary);">Tópico ${activeTopic.num} · Base Jurídica</div>
+                <h2 class="font-display text-xl sm:text-2xl font-extrabold m3-text mt-0.5">${activeTopic.title}</h2>
+                <div class="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full m3-tonal text-xs font-bold m3-muted">
+                  <i data-lucide="book-marked" class="w-3.5 h-3.5 shrink-0" style="color: var(--md-tertiary);"></i>
+                  <span>Fundamentação: ${activeTopic.basis}</span>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" data-copy-legal="${activeTopic.id}" class="m3-btn-tonal inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold shrink-0 self-start">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span>Copiar resumo</span>
+            </button>
+          </div>
+
+          <div class="p-5 sm:p-6 space-y-4">
+            <p class="text-sm sm:text-[15px] m3-text leading-relaxed">${activeTopic.intro}</p>
+
+            ${activeTopic.items.length ? `
+              <div class="p-4 sm:p-5 rounded-[22px] m3-tonal border m3-border">
+                ${activeTopic.listHeading ? `<h3 class="font-display text-sm font-extrabold mb-2.5" style="color: var(--md-primary);">${activeTopic.listHeading}</h3>` : ''}
+                <ul class="space-y-2.5">
+                  ${activeTopic.items.map(it => `
+                    <li class="flex items-start gap-2.5 text-sm m3-text leading-relaxed">
+                      <i data-lucide="chevron-right" class="w-4 h-4 mt-0.5 shrink-0" style="color: var(--md-tertiary);"></i>
+                      <span>${it}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+            ` : ''}
+
+            ${activeTopic.outro ? `<p class="text-sm sm:text-[15px] m3-text leading-relaxed">${activeTopic.outro}</p>` : ''}
+
+            <div style="background-color: var(--md-warning-bg); color: var(--md-warning-text);" class="p-4 sm:p-5 rounded-[22px] flex items-start gap-3">
+              <i data-lucide="shield-alert" class="w-5 h-5 shrink-0 mt-0.5"></i>
+              <div class="text-sm leading-relaxed">
+                <strong class="font-display block mb-0.5">Orientação ao agente</strong>
+                <span>${activeTopic.guidance}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="background-color: var(--md-surface-container); border-color: var(--md-outline-variant);" class="px-5 sm:px-6 py-3.5 border-t flex items-center justify-between gap-2">
+            <button type="button" data-legal-tab="resumo" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full m3-card m3-text text-xs font-bold hover:opacity-85">
+              <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+              <span>Voltar ao Quadro-Resumo</span>
+            </button>
+            <span class="text-xs m3-muted">Base de Conhecimento A2M</span>
+          </div>
+        </article>
+      `}
+    </div>
+  `;
+}
+
+// ============================================================
 // VIEW 3: CENTRAL DE SCRIPTS (Normal Page)
 // ============================================================
 function renderScriptsView() {
@@ -2558,8 +2862,9 @@ function renderSearchResults(rawQuery) {
   const matchedScripts = SCRIPTS.filter(sc => normalizeText(sc.title + ' ' + sc.raw + ' ' + sc.tag).includes(qNorm));
   const matchedHolidays = HOLIDAYS.filter(h => normalizeText(h.name + ' ' + h.scope + ' ' + h.date + ' feriado').includes(qNorm)).slice(0, 6);
   const matchedBirthdays = BIRTHDAYS.filter(b => normalizeText(b.name + ' ' + formatBdayDM(b) + ' aniversario aniversariante').includes(qNorm));
+  const matchedLegal = LEGAL_TOPICS.filter(t => normalizeText(getLegalTopicPlainText(t) + ' clausula convencao contrato juridico').includes(qNorm));
 
-  if (!matchedSections.length && !matchedScripts.length && !matchedHolidays.length && !matchedBirthdays.length) {
+  if (!matchedSections.length && !matchedScripts.length && !matchedHolidays.length && !matchedBirthdays.length && !matchedLegal.length) {
     container.innerHTML = `
       <div class="p-8 text-center">
         <div class="font-display text-sm font-bold m3-text mb-1">Nenhum resultado para "${escapeHtml(q)}"</div>
@@ -2613,6 +2918,19 @@ function renderSearchResults(rawQuery) {
     }).join('');
   }
 
+  if (matchedLegal.length) {
+    html += `<div class="px-2 pt-2 text-[10px] font-extrabold uppercase tracking-wider m3-muted">Base Jurídica & Cláusulas (${matchedLegal.length})</div>`;
+    html += matchedLegal.map(t => `
+      <button type="button" data-search-legal="${t.id}" class="w-full text-left p-3.5 rounded-2xl m3-tonal hover:opacity-90 border m3-border">
+        <div class="flex items-center gap-2">
+          <span style="background-color: var(--md-tertiary-container); color: var(--md-on-tertiary-container);" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold">${t.num}</span>
+          <span class="font-display text-xs sm:text-sm font-bold m3-text">${highlightText(t.title, q)}</span>
+        </div>
+        <p class="text-xs m3-muted mt-1">${highlightText(t.basis, q)}</p>
+      </button>
+    `).join('');
+  }
+
   if (matchedSections.length) {
     html += `<div class="px-2 pt-2 text-[10px] font-extrabold uppercase tracking-wider m3-muted">Seções do Manual (${matchedSections.length})</div>`;
     html += matchedSections.map(sec => {
@@ -2652,6 +2970,20 @@ function buildPrintContainer() {
         <div class="space-y-3">${renderSectionBodyBlocks(sec)}</div>
       </div>
     `).join('')}
+    <div class="print-section" style="margin-top: 24px;">
+      <h2 style="font-size: 18px; font-weight: 800; color: #143052; margin-bottom: 10px;">Base de Conhecimento — Fundamentação Contratual e Condominial</h2>
+      ${LEGAL_TOPICS.map(t => `
+        <div style="margin-bottom: 12px;">
+          <h3 style="font-size: 14px; font-weight: 700; color: #143052;">${t.num}. ${t.title}</h3>
+          <div style="font-size: 11.5px; color: #64748b; margin-bottom: 4px;">Fundamentação: ${t.basis}</div>
+          <p style="font-size: 12.5px; margin: 4px 0;">${t.intro}</p>
+          ${t.items.length ? `<ul style="font-size: 12.5px; margin: 4px 0 4px 18px; list-style: disc;">${t.items.map(i => `<li>${i}</li>`).join('')}</ul>` : ''}
+          ${t.outro ? `<p style="font-size: 12.5px; margin: 4px 0;">${t.outro}</p>` : ''}
+          <p style="font-size: 12px; background: #fef3c7; padding: 6px 10px; border-left: 3px solid #b99655; margin-top: 4px;"><strong>Orientação ao agente:</strong> ${t.guidance}</p>
+        </div>
+      `).join('')}
+      <p style="font-size: 12px; background: #faf7f0; padding: 8px 10px; border-left: 3px solid #b99655;"><strong>Regra de Ouro:</strong> ${LEGAL_GOLDEN_RULE}</p>
+    </div>
   `;
 }
 
@@ -2665,6 +2997,7 @@ function renderApp() {
   const main = document.getElementById('mainContent');
   if (state.view === 'home') main.innerHTML = renderHomeView();
   else if (state.view === 'normas') main.innerHTML = renderNormasView();
+  else if (state.view === 'juridico') main.innerHTML = renderJuridicoView();
   else if (state.view === 'scripts') main.innerHTML = renderScriptsView();
   else if (state.view === 'feriados') main.innerHTML = renderFeriadosView();
   else if (state.view === 'prazos') main.innerHTML = renderPrazosView();
@@ -2825,6 +3158,38 @@ document.addEventListener('click', e => {
   if (copyBtn) {
     const sc = SCRIPTS.find(s => s.id === copyBtn.dataset.copyScript);
     if (sc) copyText(getResolvedScript(sc), `Script ${sc.code} copiado!`);
+    return;
+  }
+
+  // Legal topic tab switch
+  const legalTabBtn = e.target.closest('[data-legal-tab]');
+  if (legalTabBtn) {
+    state.view = 'juridico';
+    state.activeLegalTab = legalTabBtn.dataset.legalTab;
+    renderApp();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  // Copy legal summary
+  const copyLegalBtn = e.target.closest('[data-copy-legal]');
+  if (copyLegalBtn) {
+    const t = LEGAL_TOPICS.find(x => x.id === copyLegalBtn.dataset.copyLegal);
+    if (t) {
+      const txt = `${t.num}. ${t.title}\nFundamentação: ${t.basis}\nOrientação ao agente: ${t.guidance}`;
+      copyText(txt, `Resumo de "${t.shortTitle}" copiado!`);
+    }
+    return;
+  }
+
+  // Search result -> Legal topic
+  const searchLegal = e.target.closest('[data-search-legal]');
+  if (searchLegal) {
+    closeSearchModal();
+    state.view = 'juridico';
+    state.activeLegalTab = searchLegal.dataset.searchLegal;
+    renderApp();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
 
